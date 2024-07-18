@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Settings{% endblock %}
+
+{% block body %}
+
+<div class="con-settings">
+
+<div id="edit-personal-data">
+  <div class="row py-4">
+    <h3>Edit personal data</h3>
+  </div>
+  <h5>Provide new informations</h5>
+  <div class="col mt-1">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="New Name" aria-label="Name" aria-describedby="button-addon2">
+      <button class="btn btn-outline-secondary" type="button" id="button-addon2">Save</button>
+    </div>
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="New Email" aria-label="Email" aria-describedby="button-addon2">
+      <button class="btn btn-outline-secondary" type="button" id="button-addon2">Save</button>
+    </div>
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="New Password" aria-label="Password" aria-describedby="button-addon2">
+      <button class="btn btn-outline-secondary" type="button" id="button-addon2">Save</button>
+    </div>
+  </div>
+ 
+  
+</div>
+
+<div id="edit-default-settings">
+  <div class="row py-4">
+    <h3>Edit default settings</h3>
+  </div>
+  <div class="col mb-3">
+    <h5 >Incomes</h5>
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="New category" aria-label="New category" aria-describedby="button-addon2">
+      <button class="btn btn-outline-secondary" type="button" id="button-addon2">Add</button>
+    </div>
+    <div class="input-group">
+      <select title="select" class="form-select">
+        <option value="1">Salary</option>
+        <option value="2">Bank interest</option>
+        <option value="3">Sales on allegro</option>
+        <option value="4">Other</option>
+      </select>
+      <button class="btn btn-outline-secondary" type="button">Edit</button>
+      <button class="btn btn-outline-secondary" type="button">Delete</button>
+    </div>
+  </div>
+  <div class="col mb-3">
+    <h5>Expenses</h5>
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="New category" aria-label="New category" aria-describedby="button-addon2">
+      <button class="btn btn-outline-secondary" type="button" id="button-addon2">Add</button>
+    </div>
+    <div class="input-group">
+      <select class="form-select" title="select" >
+        <option value="1">Food</option>
+        <option value="2">Housing</option>
+        <option value="3">Transportation</option>
+        <option value="4">Telecommunications</option>
+        <option value="5">Healthcare</option>
+        <option value="6">Clothing</option>
+        <option value="7">Hygiene</option>
+        <option value="8">Children</option>
+        <option value="9">Entertainment</option>
+        <option value="10">Excursion</option>
+        <option value="11">Training</option>
+        <option value="12">Books</option>
+        <option value="13">Savings</option>
+        <option value="14">Retirement</option>
+        <option value="15">Repayment of debts</option>
+        <option value="16">Donation</option>
+        <option value="17">Other expenses</option>
+      </select>
+      <button class="btn btn-outline-secondary" type="button">Edit</button>
+      <button class="btn btn-outline-secondary" type="button">Delete</button>
+    </div>
+  </div>
+
+  <div class="col mb-3">
+    <h5>Others</h5>
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="New payment method" aria-label="Recipient's username" aria-describedby="button-addon2">
+      <button class="btn btn-outline-secondary" type="button" id="button-addon2">Add</button>
+    </div>
+    <div class="input-group">
+      <select class="form-select" title="select">
+        <option value="1">Cash</option>
+        <option value="2">Debit Card</option>
+        <option value="3">Credit Card</option>
+      </select>
+      <button class="btn btn-outline-secondary" type="button">Edit</button>
+      <button class="btn btn-outline-secondary" type="button">Delete</button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Log in{% endblock %}
+
+{% block body %}
+  
+  <div class="con-login-signup">
+    <div id="img" class="container-fluid">
+        <h1>Spending money <br> <strong>like water?</strong></h1>
+        <img id="img-wave" class="my-2" src="/images/wave-Sign-in_2.png" alt="wave-img" width="400px" height="180px">
+        <h3>No way...</h3>
+    </div>
+
+
+    <div id="sign-in-up">
+        <h4 class="mb-3">Welcome to Personal Budget. <br> Sign In to continue.</h4>
+        <p style="font-size: 16px; font-family: serif;">Don't have an account? <a href="/signup/new" class="link-secondary link-underline-dark">Create it! </a> <br> It takes less than a minute.</p>
+
+        <form action="/login/create" method="post">
+
+        <div class="form-group">
+            <label for="inputEmail">Email address</label>
+            <input type="email" id="inputEmail" name="email" placeholder="Email address" autofocus value="{{ email }}" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword">Password</label>
+            <input type="password" id="inputPassword" name="password" placeholder="Password" class="form-control"/>
+        </div>
+
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" name="remember_me" {% if remember_me %} checked="checked" {% endif %} /> Remember me
+            </label>
+        </div>
+
+        <button type="submit" class="btn btn-dark btn-lg my-3">Log in</button><br>
+        <p style="font-size: 16px; font-family: serif;"><a class="link-secondary link-underline-dark" href="/password/forgot">Forgot password?</a></p>
+
+        </form>
+
+    </div>
+
+    <div id="features" class="container-fluid">
+        <div class="row">
+        <div class="col-md-4 feature-col">
+          <p><strong>Add</strong></p>
+          <img class="feature-img" src="/images/plus_tall_green.png" alt="plus_img">
+          <p>Chashflow</p>
+        </div>
+        <div class="col-md-4 feature-col">
+          <p><strong>Review</strong></p>
+          <img class="feature-img" src="/images/loupe _orange.png" alt="magnifying-glass_img">
+          <p>Balance</p>
+        </div>
+        <div  class="col-md-4 feature-col">
+          <p><strong>Save</strong></p>
+          <img class="feature-img" src="/images/wallet_blue.png" alt="wallet_blue_img">
+          <p>Money</p>
+        </div>
+        </div>
+      </div>
+    </div>
+
+
+{% endblock %}
