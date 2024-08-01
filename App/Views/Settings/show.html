@@ -7,94 +7,160 @@
 <div class="con-settings">
 
 <div id="edit-personal-data">
-  <div class="row py-4">
-    <h3>Edit personal data</h3>
+  <div class="row pt-4">
+    <h3 class="headerOfEditPersonalData">Edit personal data</h3>
   </div>
-  <h5>Provide new informations</h5>
-  <div class="col mt-1">
+  <hr>
+  <h5 class="headerOfEditPersonalData">Provide new informations</h5>
+
+  <div class="col">
+
+     <!-- 
+
     <div class="input-group">
-      <input type="text" class="form-control" placeholder="New Name" aria-label="Name" aria-describedby="button-addon2">
+
+      <input type="text" class="form-control" placeholder="{{user.name}}" aria-label="Name" aria-describedby="button-addon2">
       <button class="btn btn-outline-secondary" type="button" id="button-addon2">Save</button>
+
     </div>
+
     <div class="input-group">
-      <input type="text" class="form-control" placeholder="New Email" aria-label="Email" aria-describedby="button-addon2">
+
+      <input type="text" class="form-control" placeholder="{{user.email}}" aria-label="Email" aria-describedby="button-addon2">
       <button class="btn btn-outline-secondary" type="button" id="button-addon2">Save</button>
+
     </div>
+
     <div class="input-group">
+
       <input type="text" class="form-control" placeholder="New Password" aria-label="Password" aria-describedby="button-addon2">
       <button class="btn btn-outline-secondary" type="button" id="button-addon2">Save</button>
-    </div>
+
+    </div> 
+    -->
+    <form method="post" action="/settings/update" id="formProfile" class="d-flex flex-column personalDataForm">
+
+      <div class="form-group">
+          <label for="inputName">Name</label>
+          <input id="inputName" name="name" placeholder="Name" value="{{ user.name }}" required class="form-control"/>
+      </div>
+      <div class="form-group">
+          <label for="inputEmail">Email address</label>
+          <input id="inputEmail" name="email" placeholder="email address" value="{{ user.email }}" required type="email" class="form-control"/>
+      </div>
+      <div class="form-group">
+          <label for="inputPassword">Password</label>
+          <input type="password" id="inputPassword" name="password" placeholder="Password" aria-describedby="helpBlock" class="form-control"/>
+          <span id="helpBlock" class="help-block">Leave blank to keep current password</span>
+      </div>
+
+      <button type="submit" class="btn btn-lg btn-outline-secondary mt-3">Save</button>
+
+  </form>
+
+
+
   </div>
- 
-  
+
 </div>
 
 <div id="edit-default-settings">
-  <div class="row py-4">
+  <div class="row pt-4">
     <h3>Edit default settings</h3>
   </div>
-  <div class="col mb-3">
+  <hr>
+  <div class="col">
     <h5 >Incomes</h5>
-    <div class="input-group">
-      <input type="text" class="form-control" placeholder="New category" aria-label="New category" aria-describedby="button-addon2">
-      <button class="btn btn-outline-secondary" type="button" id="button-addon2">Add</button>
+    <div class="input-group d-flex">
+      <form action="/settings/addIncomeCategory" method="post" class="categoryForms">
+        
+        <input id="inputIncomeCategory" name="incomeCategoryName" type="text" class="form-control" placeholder="New category" aria-label="New category" aria-describedby="button-addon2">
+        <label for="inputIncomeCategory"></label>
+      
+        <button class="btn btn-success" type="submit" id="button-addon2">Add</button>
+      </form>
     </div>
     <div class="input-group">
-      <select title="select" class="form-select">
-        <option value="1">Salary</option>
-        <option value="2">Bank interest</option>
-        <option value="3">Sales on allegro</option>
-        <option value="4">Other</option>
-      </select>
-      <button class="btn btn-outline-secondary" type="button">Edit</button>
-      <button class="btn btn-outline-secondary" type="button">Delete</button>
+      <form action="/settings/delete-income-category" method="post" class="categoryForms">
+
+        <select id="incomeCategorySelect" name="incomeCategorySelected" title="select" class="form-select">
+
+          {% for incomeCategory in incomeCategories %}
+            <option value="{{ incomeCategory.name }}" >{{ incomeCategory.name }}</option>
+          {% endfor %}
+
+        </select>
+        <label for="incomeCategorySelect"></label>
+        <button class="btn btn-warning" type="submit">Delete</button>
+      </form>
+      <form action="/settings/restore-income-categories" method="post">
+        <button class="btn btn-danger mt-3" type="submit">Restore all categories</button>
+      </form>
+      
     </div>
   </div>
-  <div class="col mb-3">
+  <hr>
+  <div class="col">
     <h5>Expenses</h5>
     <div class="input-group">
-      <input type="text" class="form-control" placeholder="New category" aria-label="New category" aria-describedby="button-addon2">
-      <button class="btn btn-outline-secondary" type="button" id="button-addon2">Add</button>
+      <form action="/settings/addExpenseCategory" method="post" class="categoryForms">
+
+        <input id="inputExpenseCategory" type="text" name="expenseCategoryName" class="form-control" placeholder="New category" aria-label="New category" aria-describedby="button-addon2">
+        <label for="inputExpenseCategory"></label>
+
+        <button class="btn btn-success" type="submit">Add</button>
+      </form>
     </div>
     <div class="input-group">
-      <select class="form-select" title="select" >
-        <option value="1">Food</option>
-        <option value="2">Housing</option>
-        <option value="3">Transportation</option>
-        <option value="4">Telecommunications</option>
-        <option value="5">Healthcare</option>
-        <option value="6">Clothing</option>
-        <option value="7">Hygiene</option>
-        <option value="8">Children</option>
-        <option value="9">Entertainment</option>
-        <option value="10">Excursion</option>
-        <option value="11">Training</option>
-        <option value="12">Books</option>
-        <option value="13">Savings</option>
-        <option value="14">Retirement</option>
-        <option value="15">Repayment of debts</option>
-        <option value="16">Donation</option>
-        <option value="17">Other expenses</option>
-      </select>
-      <button class="btn btn-outline-secondary" type="button">Edit</button>
-      <button class="btn btn-outline-secondary" type="button">Delete</button>
+      <form action="/settings/delete-expense-category" method="post" class="categoryForms">
+
+        <select id="expenseCategorySelect" name="expenseCategorySelected" class="form-select" title="select" >
+
+          {% for expenseCategory in expenseCategories %}
+            <option value="{{ expenseCategory.name }}" >{{ expenseCategory.name }}</option>
+          {% endfor %}
+          
+        </select>
+        <label for="expenseCategorySelect"></label>
+        <button class="btn btn-warning" type="submit">Delete</button>
+
+      </form>
+
+      <form action="/settings/restore-expense-categories" method="post" >
+
+        <button class="btn btn-danger mt-3" type="submit">Restore all categories</button>
+
+      </form>
+
     </div>
   </div>
-
-  <div class="col mb-3">
-    <h5>Others</h5>
+  <hr>
+  <div class="col mb-1">
+    <h5>Payment methods</h5>
     <div class="input-group">
-      <input type="text" class="form-control" placeholder="New payment method" aria-label="Recipient's username" aria-describedby="button-addon2">
-      <button class="btn btn-outline-secondary" type="button" id="button-addon2">Add</button>
+      <form action="/settings/addPaymentCategory" method="post" class="categoryForms">
+
+      <input id="inputPaymentCategory" name="paymentCategoryName" type="text" class="form-control" placeholder="New method" aria-label="Recipient's username">
+      <label for="inputPaymentCategory"></label>
+
+      <button class="btn btn-success" type="submit" id="button-addon2">Add</button>
+    </form>
     </div>
     <div class="input-group">
-      <select class="form-select" title="select">
-        <option value="1">Cash</option>
-        <option value="2">Debit Card</option>
-        <option value="3">Credit Card</option>
-      </select>
-      <button class="btn btn-outline-secondary" type="button">Edit</button>
-      <button class="btn btn-outline-secondary" type="button">Delete</button>
+      <form action="/settings/delete-payment-category" method="post" class="categoryForms">
+        <select id="paymentCategorySelect" name="paymentCategorySelected" class="form-select" title="select">
+
+          {% for paymentMethod in paymentMethods %}
+            <option value="{{ paymentMethod.name }}">{{ paymentMethod.name }}</option>
+          {% endfor %}
+
+        </select>
+        <label for="paymentCategorySelect"></label>
+        <button class="btn btn-warning" type="submit">Delete</button>
+      </form>
+      <form action="/settings/restore-payment-categories" method="post">
+        <button class="btn btn-danger mt-3" type="submit">Restore all categories</button>
+      </form>
     </div>
   </div>
 </div>

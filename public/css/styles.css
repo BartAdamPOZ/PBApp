@@ -172,6 +172,16 @@
     flex-direction:column-reverse;
   }
 
+  form.categoryForms {
+    display: inherit;
+    width: -webkit-fill-available;
+  }
+
+  form.personalDataForm {
+    display: inherit;
+    width: -webkit-fill-available;
+  }
+
   .input-group {
     min-width: 330px;
     padding: 0.5rem;
@@ -241,13 +251,17 @@
     font-size: 14px;
   }
 
+  .headerOfEditPersonalData {
+    text-align: center;
+  }
 
-/* Id's */
 
   .features-home >* {
     text-align: center;
     padding: 50px 0 50px 0;
   }
+
+  /* Id's */
 
   #select-period {
     grid-area: select-period;
@@ -372,10 +386,10 @@
     grid-area: pers-data;
     background-color: #F3F5F7;
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: start;
     flex-direction: column;
-    padding-top: 1rem;
+    padding: 1rem 8rem;
     }
 
 
@@ -384,12 +398,11 @@
     background-color: #F3F5F7;
     display: flex;
     justify-content: start;
-    align-items: center;
+    align-items: stretch;
     text-align: center;
     flex-direction: column;
-    padding-top: 1rem;
+    padding: 1rem 8rem;
   }
-
 
 
   #add-income-main-content {

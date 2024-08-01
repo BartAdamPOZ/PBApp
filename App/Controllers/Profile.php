@@ -18,16 +18,9 @@ class Profile extends Authenticated {
 
   }
 
-  public function showAction() {
-
-    View::renderTemplate('Profile/show.html', [
-    'user' => $this -> user
-    ]);
-  }
-
   public function editAction() {
 
-    View::renderTemplate('Profile/edit.html', [
+    View::renderTemplate('settings/show.html', [
       'user' => $this -> user
     ]);
 
@@ -39,11 +32,11 @@ class Profile extends Authenticated {
 
       Flash::addMessage('Changes saved');
 
-      $this -> redirect ('/profile/show');
+      $this -> redirect ('/settings/show');
 
     } else {
 
-      View::renderTemplate('Profile/edit.html', [
+      View::renderTemplate('settings/show.html', [
         'user' => $this -> user
       ]);
     }

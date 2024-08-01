@@ -118,7 +118,11 @@ class Router
                 $action = $this->convertToCamelCase($action);
 
                 if (is_callable([$controller_object, $action])) {
-                    $controller_object->$action();
+                    if (isset($this->params['type'])) {
+                        $controller_object->$action($this->params['type']);
+                    } else {
+                        $controller_object->$action();
+                    }
 
                 } else {
                     throw new \Exception("Method $action (in controller $controller) not found");

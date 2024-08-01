@@ -5,11 +5,11 @@ namespace App\Controllers;
 use \Core\View;
 use \App\Auth;
 
-class ReviewBalance extends Authenticated 
+class Review extends Authenticated 
 {
   public function showAction()
   {
-      View::renderTemplate('ReviewBalance/show.html');
+      View::renderTemplate('Review/show.html');
   }
 
 }

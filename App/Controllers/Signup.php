@@ -34,6 +34,7 @@ class Signup extends \Core\Controller
 
         if ($user->save()) {
 
+            User::copyDatabaseRecords($user -> id);
             $user -> sendActivationEmail();
             $this -> redirect('/signup/success');
 

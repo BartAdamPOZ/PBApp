@@ -4,29 +4,9 @@
 
 {% block footer %}
     <script src="/js/hideShowPassword.min.js"></script>
+    <script src="/js/app.js"></script>
 
     <script>
-        /**
-         * Add jQuery Validation plugin method for a valid password
-         *
-         * Valid passwords contain at least one letter and one number.
-         */
-        $.validator.addMethod('validPassword',
-            function(value, element, param) {
-
-                if (value != '') {
-                    if (value.match(/.*[a-z]+.*/i) == null) {
-                        return false;
-                    }
-                    if (value.match(/.*\d+.*/) == null) {
-                        return false;
-                    }
-                }
-
-                return true;
-            },
-            'Must contain at least one letter and one number'
-        );
 
         $(document).ready(function() {
 
@@ -69,7 +49,15 @@
 
 {% block body %}
 
-    <h1>Sign up</h1>
+    <div class="con-login-signup">
+    <div id="img" >
+        <h1>Looking for way to have <br> <strong>nice nest egg?</strong></h1>
+        <img id="img-nest" class="my-2" src="/images/nest_egg_sign_up.png" alt="nest-img" width="320px" height="160px">
+        <h5>You just found one...</h3>
+    </div>
+    <div id="sign-in-up">
+        <h4 class="mb-3">Welcome to Personal Budget. <br> Sign Up to be in touch with your wallet.</h4>
+        <p style="font-size: 16px; font-family: serif;">Already have an account? Log in  <a href="/login/new" class="link-secondary link-underline-dark"> here. </a></p>
 
     {% if user.errors is not empty %}
         <p>Errors:</p>
@@ -80,23 +68,46 @@
         </ul>
     {% endif %}
 
-    <form method="post" action="/signup/create" id="formSignup">
+        <form method="post" action="/signup/create" id="formSignup">
 
-        <div>
-            <label for="inputName">Name</label>
-            <input id="inputName" name="name" placeholder="Name" autofocus value="{{ user.name }}" required />
-        </div>
-        <div>
-            <label for="inputEmail">Email address</label>
-            <input id="inputEmail" name="email" placeholder="email address" value="{{ user.email }}" required type="email" />
-        </div>
-        <div>
-            <label for="inputPassword">Password</label>
-            <input type="password" id="inputPassword" name="password" placeholder="Password" required />
-        </div>
+            <div class="form-group">
+                <label for="inputName">Name</label>
+                <input id="inputName" name="name" placeholder="Name" autofocus value="{{ user.name }}" required class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="inputEmail">Email address</label>
+                <input id="inputEmail" name="email" placeholder="email address" value="{{ user.email }}" required type="email" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="inputPassword">Password</label>
+                <input type="password" id="inputPassword" name="password" placeholder="Password" required class="form-control"/>
+            </div>
 
-        <button type="submit">Sign up</button>
+            <button type="submit" style="padding-left: 80px; padding-right: 85px; " class="btn btn-dark btn-lg my-3">Sign up</button>
 
-    </form>
+        </form>
+
+    </div>
+
+    <div id="features" class="container-fluid">
+        <div class="row">
+            <div class="col-md-4 feature-col">
+                <p><strong>Add</strong></p>
+                <img class="feature-img" src="/images/plus_tall_green.png" alt="plus_img">
+                <p>Cashflow</p>
+            </div>
+            <div class="col-md-4 feature-col">
+                <p><strong>Review</strong></p>
+                <img class="feature-img" src="/images/loupe _orange.png" alt="magnifying-glass">
+                <p>Balance</p>
+            </div>
+            <div  class="col-md-4 feature-col">
+                <p><strong>Save</strong></p>
+                <img class="feature-img" src="/images/wallet_blue.png" alt="">
+                <p>Money</p>
+            </div>
+        </div>
+    </div>
+    </div>
 
 {% endblock %}

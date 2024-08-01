@@ -7,6 +7,7 @@ use \App\Token;
 use \App\Mail;
 use \Core\View;
 
+
 /**
  * User model
  *
@@ -77,11 +78,84 @@ class User extends \Core\Model
             $stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
             $stmt->bindValue(':activation_hash', $hashed_token, PDO::PARAM_STR);
 
-            return $stmt->execute();
+            if ($stmt->execute()) {
+                $this -> id = $db -> lastInsertId();
+                return true;
+            }
         }
 
         return false;
     }
+
+    public static function copyDatabaseRecords($user_id) {
+
+        // inserting default income categories
+        self::restoreOrCreateDefaultCategories($user_id, 'income');
+        
+        // inserting default expense categories
+        self::restoreOrCreateDefaultCategories($user_id, 'expense');
+
+        //inserting default payment methods
+        self::restoreOrCreateDefaultCategories($user_id, 'payment');
+    }
+
+    public static function restoreOrCreateDefaultCategories($user_id, $type) {
+        $tableMap = [
+            'income' => ['assigned' => 'incomes_category_assigned_to_users', 'default' => 'incomes_category_default'],
+            'expense' => ['assigned' => 'expenses_category_assigned_to_users', 'default' => 'expenses_category_default'],
+            'payment' => ['assigned' => 'payment_methods_assigned_to_users', 'default' => 'payment_methods_default']
+        ];
+    
+        $assignedTable = $tableMap[$type]['assigned'];
+        $defaultTable = $tableMap[$type]['default'];
+    
+        // Check if categories exist in the database for the current user
+        $sql = "SELECT 1 FROM $assignedTable WHERE user_id = :user_id";
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->execute();
+    
+        if ($stmt->fetch()) {
+            // Delete all records assigned to the current user in the assigned table
+            $sql = "DELETE FROM $assignedTable WHERE user_id = :user_id";
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+            $stmt->execute();
+        }
+    
+        // Insert default records for the user into the assigned table
+        $sql = "INSERT INTO $assignedTable(user_id, name)
+                SELECT :user_id, name
+                FROM $defaultTable";
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    public static function getCategories($user_id, $type)  {
+
+        $tableMap = [
+            'income' => 'incomes_category_assigned_to_users',
+            'expense' => 'expenses_category_assigned_to_users',
+            'payment' => 'payment_methods_assigned_to_users'
+        ];
+    
+        $tableName = $tableMap[$type];
+    
+        $sql = "SELECT name , id
+                FROM $tableName WHERE user_id = :user_id";
+    
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->execute();
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+
 
     /**
      * Validate current property values, adding valiation error messages to the errors array property
@@ -333,6 +407,7 @@ class User extends \Core\Model
 
     }
 
+
     public static function activate($value) {
 
         $token = new Token($value);
@@ -348,7 +423,7 @@ class User extends \Core\Model
 
         $stmt -> bindValue(':hashed_token', $hashed_token, PDO::PARAM_STR);
 
-        $stmt -> execute();
+        $stmt -> execute();        
 
     }
 
@@ -392,11 +467,79 @@ class User extends \Core\Model
                 
             }
             
-
             return $stmt -> execute();
         }
 
         return false;
+    }
+
+    public function addCategory($categoryName, $userId, $type) {
+
+        $tableMap = [
+            'income' => 'incomes_category_assigned_to_users',
+            'expense' => 'expenses_category_assigned_to_users',
+            'payment' => 'payment_methods_assigned_to_users'
+        ];
+
+        $tableName = $tableMap[$type];
+
+        $sql = "INSERT INTO $tableName (user_id, name) 
+                VALUES (:user_id, :name)";
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':name', $categoryName, PDO::PARAM_STR);
+
+        return $stmt->execute();
+    }
+
+    public function categoryExists($categoryName, $userId, $type) {
+
+        $tableMap = [
+            'income' => 'incomes_category_assigned_to_users',
+            'expense' => 'expenses_category_assigned_to_users',
+            'payment' => 'payment_methods_assigned_to_users'
+        ];
+
+        $tableName = $tableMap[$type];
+
+        $sql = "SELECT * 
+                FROM $tableName 
+                WHERE user_id = :user_id 
+                AND name = :name";
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':name', $categoryName, PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->fetch() !== false;
+    }
+
+    public function deleteCategory($categoryName, $userId, $type) {
+
+        $tableMap = [
+            'income' => 'incomes_category_assigned_to_users',
+            'expense' => 'expenses_category_assigned_to_users',
+            'payment' => 'payment_methods_assigned_to_users'
+        ];
+
+        $tableName = $tableMap[$type];
+
+        $sql = "DELETE FROM $tableName 
+                WHERE user_id = :user_id AND name = :name";
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':name', $categoryName, PDO::PARAM_STR);
+        $stmt->execute();
+
     }
 
 }
