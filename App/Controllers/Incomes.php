@@ -11,13 +11,15 @@ class Incomes extends Authenticated
 {
 
   public $user;
+  public $income;
 
 
   public function addAction() {
 
     $income = new Income($_POST);
+    $today = date('Y-m-d');
 
-    if($income -> save()) {
+    if($income -> save() && !empty($_POST['income_category_assigned_to_user_id'])) {
 
       Flash::addMessage('Income added successfully.');
 
@@ -25,13 +27,13 @@ class Incomes extends Authenticated
 
     } else {
 
-      Flash::addMessage('Something went wrong. Please try again.');
+      Flash::addMessage("No category selected! Go to Settings and add one or press 'Restore all categories'.", Flash::WARNING);
 
       View::renderTemplate('/Incomes/show.html', [
           'amount' => $_POST['amount'],
           'date_of_income' => $_POST['date_of_income'],
-          'income_category_assigned_to_user_id' => $_POST['income_category_assigned_to_user_id'],
-          'income_comment' => $_POST['income_comment']
+          'income_comment' => $_POST['income_comment'],
+          'today' => $today
       ]);
 
     }
@@ -42,11 +44,13 @@ class Incomes extends Authenticated
 
     $user = Auth::getUser();
     $incomeCategories = $user -> getCategories($user->id, 'income');
+    $incomes = Income::getIncomesByUserId($user -> id);
     $today = date('Y-m-d');
 
 
     View::renderTemplate('Incomes/show.html', [
       'user' => $this -> user,
+      'incomes' => $incomes,
       'incomeCategories' => $incomeCategories,
       'today' => $today
     ]);

@@ -33,8 +33,6 @@ class Income extends \Core\Model {
     }
 
     public function save() {
-
-      //dodaj metodę validate(), ale najpierw ją zrób
   
       if (empty($this->errors)) {
 
@@ -64,4 +62,20 @@ class Income extends \Core\Model {
   
     }
 
-}
+    public static function getIncomesByUserId($user_id) {
+
+      $sql = 'SELECT *
+              FROM incomes
+              WHERE user_id = :user_id
+              ORDER BY date_of_income ASC';
+
+      $db = static::getDB();
+      $stmt = $db->prepare($sql);
+      $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+      $stmt->execute();
+
+      return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    }
+
+  }

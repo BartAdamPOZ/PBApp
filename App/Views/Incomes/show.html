@@ -11,11 +11,11 @@
       </div> 
       
         <hr>
-        <form action="/incomes/add" method="post">
+        <form action="/incomes/add" method="post" id="formAddIncome">
 
           <div class="input-group">
             <div class="form-floating ">
-              <input type="number" class="form-control" id="incomeAmount" placeholder="Amount" name="amount" step="0.01" min="0"> 
+              <input type="number" class="form-control" id="incomeAmount" placeholder="Amount" name="amount" step="0.01" min="0.01" required> 
               <label for="incomeAmount">Amount</label>
             </div>
             <span class="input-group-text">PLN</span>
@@ -48,6 +48,31 @@
 
     <div id="comparison-inc" class="container-fluid">
       <h3 class="row pt-4">Review Incomes</h3>
+      <hr>
+
+      <div class="income-table table-responsive">
+        <hr>
+        
+        <table id="incomes-table" class="table display">
+          <thead>
+            <th>Date</th>
+            <th>Category</th>
+            <th>Amount</th>
+            <th>Comment</th>
+          </thead>
+          <tbody>
+            {% for income in incomes %}
+            <tr>
+              <td>{{income.date_of_income}}</td>
+              <td>{{income.income_category_assigned_to_user_id}}</td>
+              <td>{{income.amount}}</td>
+              <td>{{income.income_comment}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+      </div>
       
     </div>
   </div>

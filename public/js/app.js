@@ -1,3 +1,8 @@
+
+$(document).ready(function() {
+  $('#incomes-table').DataTable();
+});
+
 /**
          * Add jQuery Validation plugin method for a valid password
          *
@@ -19,3 +24,4 @@ $.validator.addMethod('validPassword',
   },
   'Must contain at least one letter and one number'
 );
+

@@ -144,7 +144,8 @@ class User extends \Core\Model
         $tableName = $tableMap[$type];
     
         $sql = "SELECT name , id
-                FROM $tableName WHERE user_id = :user_id";
+                FROM $tableName WHERE user_id = :user_id
+                ORDER BY name ASC";
     
         $db = static::getDB();
         $stmt = $db->prepare($sql);
