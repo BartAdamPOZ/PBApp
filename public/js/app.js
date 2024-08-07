@@ -1,7 +1,27 @@
 
 $(document).ready(function() {
-  $('#incomes-table').DataTable();
-});
+  $('#incomes-table').DataTable( {  
+    "ajax": {
+      "url": "/incomes/getAction",
+      "dataSrc": "data",
+      "error": function(jqXHR, textStatus, errorThrown) {
+        console.error("Error loading data: ", textStatus, errorThrown);
+        console.error("Response: ", jqXHR.responseText);
+      }
+    },
+    columns: [
+      { data : 'id'},
+      { data : 'user_id'},
+      { data : 'income_category_assigned_to_user_id'},
+      { data : 'amount'},
+      { data : 'date_of_income'},
+      { data : 'income_comment'},
+    ], 
+    select:true
+    
+  });
+}); 
+
 
 /**
          * Add jQuery Validation plugin method for a valid password

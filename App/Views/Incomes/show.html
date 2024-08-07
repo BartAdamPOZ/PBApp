@@ -50,26 +50,22 @@
       <h3 class="row pt-4">Review Incomes</h3>
       <hr>
 
-      <div class="income-table table-responsive">
-        <hr>
+      <div class="table-responsive">
         
-        <table id="incomes-table" class="table display">
+        
+        <table id="incomes-table" class="table">
           <thead>
-            <th>Date</th>
-            <th>Category</th>
-            <th>Amount</th>
-            <th>Comment</th>
-          </thead>
-          <tbody>
-            {% for income in incomes %}
             <tr>
-              <td>{{income.date_of_income}}</td>
-              <td>{{income.income_category_assigned_to_user_id}}</td>
-              <td>{{income.amount}}</td>
-              <td>{{income.income_comment}}</td>
+              <th>Id</th>
+              <th>User_id</th>
+              <th>Category</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th>Comment</th>
             </tr>
-            {% endfor %}
-          </tbody>
+            
+          </thead>
+          
         </table>
 
       </div>

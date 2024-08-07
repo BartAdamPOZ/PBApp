@@ -44,17 +44,23 @@ class Incomes extends Authenticated
 
     $user = Auth::getUser();
     $incomeCategories = $user -> getCategories($user->id, 'income');
-    $incomes = Income::getIncomesByUserId($user -> id);
+    $incomes = Income::getIncomesByUserId();
     $today = date('Y-m-d');
 
 
     View::renderTemplate('Incomes/show.html', [
       'user' => $this -> user,
-      'incomes' => $incomes,
+      //'incomes' => $incomes,
       'incomeCategories' => $incomeCategories,
       'today' => $today
     ]);
 
+  }
+
+  public function getAction() {
+    $user = Auth::getUser();
+    $incomes = Income::getIncomesByUserId();
+    echo $incomes;
   }
 
 

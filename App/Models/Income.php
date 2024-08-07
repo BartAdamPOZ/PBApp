@@ -62,7 +62,11 @@ class Income extends \Core\Model {
   
     }
 
-    public static function getIncomesByUserId($user_id) {
+    public static function getIncomesByUserId() {
+
+      $user = Auth::getUser();
+
+      $draw = isset($_POST['draw']) ? intval($_POST['draw']) : 0;
 
       $sql = 'SELECT *
               FROM incomes
@@ -71,10 +75,33 @@ class Income extends \Core\Model {
 
       $db = static::getDB();
       $stmt = $db->prepare($sql);
-      $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+      $stmt->bindValue(':user_id', $user->id, PDO::PARAM_INT);
       $stmt->execute();
 
-      return $stmt->fetchAll(PDO::FETCH_ASSOC);
+      $result =  $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+      $data = [];
+
+      foreach ($result as $row) {
+        $data [] = [
+          'id' => $row['id'],
+          'user_id' => $row['user_id'],
+          'income_category_assigned_to_user_id' => $row['income_category_assigned_to_user_id'],
+          'amount' => number_format($row['amount'], 2) . "PLN",
+          'date_of_income' => $row['date_of_income'],
+          'income_comment' => $row['income_comment']
+        ];
+      }
+
+
+      $response = [
+        "draw" => 1,
+        "recordsTotal" => count($result),
+        "recordsFiltered" => count($result),
+        "data" => $data];
+
+      
+      return json_encode($response);
 
     }
 
