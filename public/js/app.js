@@ -1,6 +1,5 @@
 
-$(document).ready(function() {
-  $('#incomes-table').DataTable( {  
+  var incomesTable = $('#incomes-table').DataTable( {  
     "ajax": {
       "url": "/incomes/getAction",
       "dataSrc": "data",
@@ -16,11 +15,20 @@ $(document).ready(function() {
       { data : 'amount'},
       { data : 'date_of_income'},
       { data : 'income_comment'},
-    ], 
-    select:true
-    
+    ],     
   });
-}); 
+
+
+$('#incomes-table tbody').on('click', 'tr', function() {
+
+  if ($(this).hasClass('selected')) {
+    $(this).removeClass('selected');
+  }
+  else {
+    incomesTable.$('tr.selected').removeClass('selected');
+    $(this).addClass('selected');
+  }
+});
 
 
 /**
