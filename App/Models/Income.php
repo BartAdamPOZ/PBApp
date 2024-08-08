@@ -84,10 +84,9 @@ class Income extends \Core\Model {
 
       foreach ($result as $row) {
         $data [] = [
-          'id' => $row['id'],
-          'user_id' => $row['user_id'],
+          
           'income_category_assigned_to_user_id' => $row['income_category_assigned_to_user_id'],
-          'amount' => number_format($row['amount'], 2) . "PLN",
+          'amount' => number_format($row['amount'], 2),
           'date_of_income' => $row['date_of_income'],
           'income_comment' => $row['income_comment']
         ];

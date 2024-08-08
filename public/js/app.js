@@ -9,8 +9,7 @@
       }
     },
     columns: [
-      { data : 'id'},
-      { data : 'user_id'},
+      
       { data : 'income_category_assigned_to_user_id'},
       { data : 'amount'},
       { data : 'date_of_income'},
@@ -20,15 +19,34 @@
 
 
 $('#incomes-table tbody').on('click', 'tr', function() {
-
   if ($(this).hasClass('selected')) {
     $(this).removeClass('selected');
-  }
-  else {
-    incomesTable.$('tr.selected').removeClass('selected');
+    $(this).removeAttr('data-bs-toggle data-bs-target');
+  } else {
+    incomesTable.$('tr.selected').removeClass('selected')
+      .removeAttr('data-bs-toggle data-bs-target'); 
     $(this).addClass('selected');
+    $(this).attr('data-bs-toggle', 'modal');
+    $(this).attr('data-bs-target', '#exampleModal');
   }
 });
+
+
+$('#show-selected').on('click', function() {
+  var selectedData = incomesTable.row('.selected').data();
+  if (selectedData) {
+    console.log("Selected row data:", selectedData);
+    alert("Selected Income: " + JSON.stringify(selectedData));
+  } else {
+    console.log("No row selected");
+    alert("No row selected");
+  }
+});
+
+$('#add-income-button').on('click', function() {
+    $(this).attr('data-bs-toggle', 'modal');
+    $(this).attr('data-bs-target', '#exampleModal');
+  });
 
 
 /**

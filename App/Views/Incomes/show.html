@@ -5,12 +5,45 @@
 {% block body %}
 
   <div class="con-add-income">
-    <div id="add-income-main-content" class="container-fluid">
-      <div class="row pt-4">
-        <h3> Add new Income</h3>
-      </div> 
-      
-        <hr>
+      <h3 class="row pt-4">Review Incomes</h3>
+      <hr>
+      <div class="buttons-area">
+        <button id="add-income-button" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Add</button>
+        <button type="button" class="btn btn-warning disabled">Edit</button>
+        <button type="button" class="btn btn-danger">Delete</button>
+      </div>
+      <div class="table-responsive">
+        
+        <table id="incomes-table" class="table display">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Amount [PLN]</th>
+              <th>Date</th>
+              <th>Comment</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+          
+        </table>
+
+      </div>
+      <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" <button id="show-selected" class="btn btn-primary">Show Selected Income</button>
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
         <form action="/incomes/add" method="post" id="formAddIncome">
 
           <div class="input-group">
@@ -41,38 +74,19 @@
               <textarea name="income_comment" class="form-control" aria-label="With textarea"></textarea>
             </div>
 
-            <button type="submit" class="btn btn-dark btn-lg">Add income</button>
-          </div>
-        </form>
-    </div>
-
-    <div id="comparison-inc" class="container-fluid">
-      <h3 class="row pt-4">Review Incomes</h3>
-      <hr>
-
-      <div class="table-responsive">
-        
-        
-        <table id="incomes-table" class="table display">
-          <thead>
-            <tr>
-              <th>Id</th>
-              <th>User_id</th>
-              <th>Category</th>
-              <th>Amount</th>
-              <th>Date</th>
-              <th>Comment</th>
-            </tr>
-          </thead>
-          <tbody>
             
-          </tbody>
-          
-        </table>
-
+          </div>
+        
       </div>
-      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+    </form>
     </div>
+  </div>
+</div>
+      
   </div>
 
 {% endblock %}

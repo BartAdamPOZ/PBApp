@@ -89,15 +89,15 @@
   }
 
   .con-add-income {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows:  2fr ;
-    grid-template-areas: 
-    "income-main comparison-inc";
-    grid-gap: 1rem;
+    display: flex;
+    flex-direction: column;
     font-family: 'DM Serif Display', serif;
     padding-bottom: 1rem;
     min-height: 600px;
+  }
+
+  .con-add-income h3 {
+    text-align: end;
   }
 
   .con-add-income >* {
@@ -262,11 +262,9 @@
   }
 
   .income-table {
-    grid-area: comparison-inc;
     display: flex;
     flex-direction: column;
-    align-items: stretch;
-  
+    align-items: stretch;  
   }
   
 
@@ -330,12 +328,12 @@
   #comparison-inc {
     display: flex;
     background-color: #F3F5F7;
-    grid-area: comparison-inc;
     font-size: 12px;
     align-items: center;
     justify-content: flex-start;
     flex-direction: column;
-    position: relative;
+    width: -webkit-fill-available;
+    
   }
 
   #comparison-exp {
