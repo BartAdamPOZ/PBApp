@@ -68,10 +68,12 @@ class Income extends \Core\Model {
 
       $draw = isset($_POST['draw']) ? intval($_POST['draw']) : 0;
 
-      $sql = 'SELECT *
-              FROM incomes
-              WHERE user_id = :user_id
-              ORDER BY date_of_income ASC';
+      $sql = 'SELECT i.id, i.income_category_assigned_to_user_id , i.user_id, i.amount, i.income_comment, i.date_of_income, c.name AS category_name
+              FROM incomes i
+              JOIN incomes_category_assigned_to_users c
+              ON i.income_category_assigned_to_user_id = c.id
+              WHERE i.user_id = :user_id
+              ORDER BY i.date_of_income DESC';
 
       $db = static::getDB();
       $stmt = $db->prepare($sql);
@@ -84,17 +86,18 @@ class Income extends \Core\Model {
 
       foreach ($result as $row) {
         $data [] = [
-          
+          'id' => $row['id'],
           'income_category_assigned_to_user_id' => $row['income_category_assigned_to_user_id'],
-          'amount' => number_format($row['amount'], 2),
+          'amount' => $row['amount'], 2,
           'date_of_income' => $row['date_of_income'],
-          'income_comment' => $row['income_comment']
+          'income_comment' => $row['income_comment'],
+          'category_name' => $row['category_name']
         ];
       }
 
 
       $response = [
-        "draw" => 1,
+        "draw" => $draw,
         "recordsTotal" => count($result),
         "recordsFiltered" => count($result),
         "data" => $data];

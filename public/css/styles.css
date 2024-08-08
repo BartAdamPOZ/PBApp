@@ -97,7 +97,7 @@
   }
 
   .con-add-income h3 {
-    text-align: end;
+    text-align: center;
   }
 
   .con-add-income >* {
@@ -140,6 +140,15 @@
   }
 
 /* classes */
+  .buttons-area {
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+  .buttons-area >* {
+    width: 30%;
+  }
+
   .table-main {
     width: 100%;
     table-layout: fixe;
@@ -269,6 +278,11 @@
   
 
   /* Id's */
+
+  #th_id #th_income_category_assigned_to_user_id{
+    visibility: hidden;
+  }
+
 
   #select-period {
     grid-area: select-period;
@@ -639,13 +653,6 @@
   }
 
   .con-add-income {
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr;
-    grid-template-areas: 
-    
-    "income-main"
-    "comparison-inc"
-    ;
     padding-bottom: 1rem;
   }
 

@@ -5,18 +5,20 @@
 {% block body %}
 
   <div class="con-add-income">
-      <h3 class="row pt-4">Review Incomes</h3>
+      <h3>Review Incomes</h3>
       <hr>
       <div class="buttons-area">
         <button id="add-income-button" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Add</button>
-        <button type="button" class="btn btn-warning disabled">Edit</button>
-        <button type="button" class="btn btn-danger">Delete</button>
+        <button id="edit-income-button" type="button" class="btn btn-warning disabled">Edit</button>
+        <button id="delete-income-button" type="button" class="btn btn-danger disabled">Delete</button>
       </div>
       <div class="table-responsive">
         
         <table id="incomes-table" class="table display">
           <thead>
             <tr>
+              <th id="th_id">Id</th>
+              <th id="th_income_category_assigned_to_user_id">Category id</th>
               <th>Category</th>
               <th>Amount [PLN]</th>
               <th>Date</th>
@@ -57,7 +59,7 @@
               <select id="incomeCategoryId" name="income_category_assigned_to_user_id" title="select"  class="form-select">
       
                 {% for incomeCategory in incomeCategories %}
-                  <option value="{{ incomeCategory.id }}" >{{ incomeCategory.name }}</option>
+                  <option id="incomeCategoryIdOption" value="{{ incomeCategory.id }}" >{{ incomeCategory.name }}</option>
                 {% endfor %}
       
               </select>
