@@ -89,13 +89,10 @@ class User extends \Core\Model
 
     public static function copyDatabaseRecords($user_id) {
 
-        // inserting default income categories
         self::restoreOrCreateDefaultCategories($user_id, 'income');
         
-        // inserting default expense categories
         self::restoreOrCreateDefaultCategories($user_id, 'expense');
 
-        //inserting default payment methods
         self::restoreOrCreateDefaultCategories($user_id, 'payment');
     }
 
@@ -109,7 +106,6 @@ class User extends \Core\Model
         $assignedTable = $tableMap[$type]['assigned'];
         $defaultTable = $tableMap[$type]['default'];
     
-        // Check if categories exist in the database for the current user
         $sql = "SELECT 1 FROM $assignedTable WHERE user_id = :user_id";
         $db = static::getDB();
         $stmt = $db->prepare($sql);
@@ -117,14 +113,13 @@ class User extends \Core\Model
         $stmt->execute();
     
         if ($stmt->fetch()) {
-            // Delete all records assigned to the current user in the assigned table
+
             $sql = "DELETE FROM $assignedTable WHERE user_id = :user_id";
             $stmt = $db->prepare($sql);
             $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
             $stmt->execute();
         }
     
-        // Insert default records for the user into the assigned table
         $sql = "INSERT INTO $assignedTable(user_id, name)
                 SELECT :user_id, name
                 FROM $defaultTable";
@@ -276,7 +271,7 @@ class User extends \Core\Model
         $hashed_token = $token -> getHash();
         $this -> remember_token = $token -> getValue();
 
-        $this ->expiry_timestamp = time() + 60 * 60 * 24 * 30; // 30 days from now
+        $this ->expiry_timestamp = time() + 60 * 60 * 24 * 30;
 
         $sql = 'INSERT INTO remembered_logins (token_hash, user_id, expires_at)
                 VALUES (:token_hash, :user_id, :expires_at)';
@@ -313,7 +308,7 @@ class User extends \Core\Model
         $hashed_token = $token ->getHash();
         $this -> password_reset_token = $token -> getValue();
 
-        $expiry_timestamp = time() + 60 * 60 * 2; //2 hours from now
+        $expiry_timestamp = time() + 60 * 60 * 2;
 
         $sql = 'UPDATE users
                 SET password_reset_hash = :token_hash,

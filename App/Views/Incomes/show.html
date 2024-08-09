@@ -8,7 +8,7 @@
       <h3>Review Incomes</h3>
       <hr>
       <div class="buttons-area">
-        <button id="add-income-button" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Add</button>
+        <button id="add-income-button" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#incomeModal">Add</button>
         <button id="edit-income-button" type="button" class="btn btn-warning disabled">Edit</button>
         <button id="delete-income-button" type="button" class="btn btn-danger disabled">Delete</button>
       </div>
@@ -32,13 +32,9 @@
         </table>
 
       </div>
-      <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" <button id="show-selected" class="btn btn-primary">Show Selected Income</button>
-  Launch demo modal
-</button>
 
 <!-- Modal -->
-<div class="modal fade" id="incomeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false">
+<div class="modal fade" id="incomeModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="false">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -82,12 +78,13 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Save changes</button>
+        <button id="incomeModalSubmitButton" type="submit" class="btn btn-primary">Save changes</button>
       </div>
     </form>
     </div>
   </div>
 </div>
+
       
   </div>
 

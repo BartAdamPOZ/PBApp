@@ -40,20 +40,19 @@ class Incomes extends Authenticated
   }
 
   public function editAction() {
-    // Pobieramy ID dochodu z danych przesłanych przez formularz
+    
     $incomeId = $_POST['id'];
 
-    // Pobieramy istniejący rekord dochodu z bazy danych
     $income = Income::findById($incomeId);
 
     if ($income) {
-        // Aktualizujemy właściwości obiektu Income na podstawie danych z formularza
+        
         $income->income_category_assigned_to_user_id = $_POST['income_category_assigned_to_user_id'];
         $income->amount = $_POST['amount'];
         $income->date_of_income = $_POST['date_of_income'];
         $income->income_comment = $_POST['income_comment'];
 
-        // Zapisujemy zmiany
+        
         if ($income->editIncome($_POST)) {
             Flash::addMessage('Changes saved');
             $this->redirect('/incomes/show');
@@ -62,11 +61,39 @@ class Incomes extends Authenticated
             $this->redirect('/incomes/show');
         }
     } else {
-        // Obsługa sytuacji, gdy rekord dochodu nie został znaleziony
+        
         Flash::addMessage('Income record not found.', Flash::WARNING);
         $this->redirect('/incomes/show');
     }
   }
+
+  public function deleteAction() {
+
+    $incomeId = $_POST['id'];
+
+    $income = Income::findById($incomeId);
+
+    if ($income) {
+
+      if($income->deleteIncome($_POST)) {
+
+        Flash::addMessage('Income deleted successfully.');
+        $this->redirect('/incomes/show');
+
+      } else {
+
+        Flash::addMessage('Something went wrong. Please try again.', Flash::WARNING);
+        $this->redirect('/incomes/show');
+
+      }
+
+    } else {
+
+      Flash::addMessage('Income record not found.', Flash::WARNING);
+      $this->redirect('/incomes/show');
+
+    }
+}
 
 
   public function showAction()
@@ -74,13 +101,11 @@ class Incomes extends Authenticated
 
     $user = Auth::getUser();
     $incomeCategories = $user -> getCategories($user->id, 'income');
-    $incomes = Income::getIncomesByUserId();
     $today = date('Y-m-d');
 
 
     View::renderTemplate('Incomes/show.html', [
       'user' => $this -> user,
-      //'incomes' => $incomes,
       'incomeCategories' => $incomeCategories,
       'today' => $today
     ]);
@@ -88,9 +113,10 @@ class Incomes extends Authenticated
   }
 
   public function getAction() {
-    $user = Auth::getUser();
+
     $incomes = Income::getIncomesByUserId();
     echo $incomes;
+
   }
 
 

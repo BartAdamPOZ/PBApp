@@ -115,7 +115,6 @@ class Income extends \Core\Model {
       $stmt->bindValue(':id', $id, PDO::PARAM_INT);
       $stmt->execute();
   
-      // Zwróć obiekt klasy Income, jeśli rekord został znaleziony
       return $stmt->fetchObject(static::class);
     }
 
@@ -126,8 +125,6 @@ class Income extends \Core\Model {
       $this->date_of_income = $data['date_of_income'];
       $this->income_comment = $data['income_comment'];
 
-
-      // Sprawdź, czy nie ma błędów walidacji
       if (empty($this->errors)) {
           $sql = 'UPDATE incomes
                   SET income_category_assigned_to_user_id = :income_category_assigned_to_user_id, 
@@ -139,17 +136,38 @@ class Income extends \Core\Model {
           $db = static::getDB();
           $stmt = $db->prepare($sql);
   
-          // Przypisanie wartości do parametrów SQL
           $stmt->bindValue(':income_category_assigned_to_user_id', $this->income_category_assigned_to_user_id, PDO::PARAM_INT);
           $stmt->bindValue(':amount', $this->amount, PDO::PARAM_STR);
           $stmt->bindValue(':date_of_income', $this->date_of_income, PDO::PARAM_STR);
           $stmt->bindValue(':income_comment', $this->income_comment, PDO::PARAM_STR);
           $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
   
-          // Wykonanie zapytania SQL
           return $stmt->execute();
+          
       } else {
-          return false; // Zwróć false, jeśli wystąpiły błędy walidacji
+
+          return false; 
       }
+    }
+
+    public function deleteIncome($data) {
+
+      $this -> id = $data['id'];
+
+      if (empty($this->errors)) {
+
+        $sql = 'DELETE FROM incomes
+                WHERE id = :id';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+
+        return $stmt->execute();
+      }
+
+      return false;
+
     }
 }
