@@ -1,5 +1,6 @@
 
   var incomesTable = $('#incomes-table').DataTable( {  
+    processing: true,
     "ajax": {
       "url": "/incomes/getAction",
       "dataSrc": "data",
@@ -50,8 +51,14 @@ $('#show-selected').on('click', function() {
 });
 
 $('#add-income-button').on('click', function() {
+
   $(this).attr('data-bs-toggle', 'modal');
-  $(this).attr('data-bs-target', '#exampleModal');
+  $(this).attr('data-bs-target', '#incomeModal');
+
+  $('#formAddIncome').attr('action', '/incomes/add');
+
+  $('#incomeModalLabel').html('Add Income Details');
+
 });
 
 $('#edit-income-button').on('click', function() {
@@ -59,7 +66,11 @@ $('#edit-income-button').on('click', function() {
   var selectedData = selectedRow.data();
 
   $(this).attr('data-bs-toggle', 'modal');
-  $(this).attr('data-bs-target', '#exampleModal');
+  $(this).attr('data-bs-target', '#incomeModal');
+
+  $('#incomeModalLabel').html('Edit Income Details');
+
+  $('#formAddIncome').attr('action', '/incomes/edit');
   
   $('#incomeAmount').val(selectedData.amount);
   $('#incomeCategoryId').val(selectedData.income_category_assigned_to_user_id);
@@ -72,6 +83,27 @@ $('#edit-income-button').on('click', function() {
     }
   });
 
+  $('#dateOfIncome').val(selectedData.date_of_income);
+  $('#incomeComment').val(selectedData.income_comment);
+
+  if ($('#incomeId').length === 0) {
+    $('<input>').attr({
+        type: 'hidden',
+        id: 'incomeId',
+        name: 'id',
+        value: selectedData.id
+    }).appendTo('#formAddIncome');
+  } else {
+    $('#incomeId').val(selectedData.id);
+  }
+
+});
+
+$('#incomeModal').on('hide.bs.modal', function() {
+  $('#incomeAmount').val('');
+  $('#incomeCategoryId').val('');
+  $('#dateOfIncome').val("{{ today }}");
+  $('#incomeComment').val('');
 });
 
 $('#incomes-table tbody').on('click', 'tr', function(event) {
@@ -89,7 +121,7 @@ $('#incomes-table tbody').on('click', 'tr', function(event) {
     $('#edit-income-button').removeClass('disabled');
     $('#delete-income-button').removeClass('disabled');
     $(this).attr('data-bs-toggle', 'modal');
-    $(this).attr('data-bs-target', '#exampleModal');
+    $(this).attr('data-bs-target', '#incomeModal');
   }
 });
 

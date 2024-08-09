@@ -39,6 +39,36 @@ class Incomes extends Authenticated
     }
   }
 
+  public function editAction() {
+    // Pobieramy ID dochodu z danych przesłanych przez formularz
+    $incomeId = $_POST['id'];
+
+    // Pobieramy istniejący rekord dochodu z bazy danych
+    $income = Income::findById($incomeId);
+
+    if ($income) {
+        // Aktualizujemy właściwości obiektu Income na podstawie danych z formularza
+        $income->income_category_assigned_to_user_id = $_POST['income_category_assigned_to_user_id'];
+        $income->amount = $_POST['amount'];
+        $income->date_of_income = $_POST['date_of_income'];
+        $income->income_comment = $_POST['income_comment'];
+
+        // Zapisujemy zmiany
+        if ($income->editIncome($_POST)) {
+            Flash::addMessage('Changes saved');
+            $this->redirect('/incomes/show');
+        } else {
+            Flash::addMessage('Something went wrong. Please try again.', Flash::WARNING);
+            $this->redirect('/incomes/show');
+        }
+    } else {
+        // Obsługa sytuacji, gdy rekord dochodu nie został znaleziony
+        Flash::addMessage('Income record not found.', Flash::WARNING);
+        $this->redirect('/incomes/show');
+    }
+  }
+
+
   public function showAction()
   {
 

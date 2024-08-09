@@ -95,16 +95,61 @@ class Income extends \Core\Model {
         ];
       }
 
-
       $response = [
         "draw" => $draw,
         "recordsTotal" => count($result),
         "recordsFiltered" => count($result),
         "data" => $data];
 
-      
       return json_encode($response);
 
     }
 
-  }
+    public static function findById($id) {
+      $sql = 'SELECT * 
+              FROM incomes 
+              WHERE id = :id';
+  
+      $db = static::getDB();
+      $stmt = $db->prepare($sql);
+      $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+      $stmt->execute();
+  
+      // Zwróć obiekt klasy Income, jeśli rekord został znaleziony
+      return $stmt->fetchObject(static::class);
+    }
+
+    public function editIncome($data) {
+
+      $this->income_category_assigned_to_user_id = $data['income_category_assigned_to_user_id'];
+      $this->amount = $data['amount'];
+      $this->date_of_income = $data['date_of_income'];
+      $this->income_comment = $data['income_comment'];
+
+
+      // Sprawdź, czy nie ma błędów walidacji
+      if (empty($this->errors)) {
+          $sql = 'UPDATE incomes
+                  SET income_category_assigned_to_user_id = :income_category_assigned_to_user_id, 
+                      amount = :amount, 
+                      date_of_income = :date_of_income, 
+                      income_comment = :income_comment
+                  WHERE id = :id'; 
+  
+          $db = static::getDB();
+          $stmt = $db->prepare($sql);
+  
+          // Przypisanie wartości do parametrów SQL
+          $stmt->bindValue(':income_category_assigned_to_user_id', $this->income_category_assigned_to_user_id, PDO::PARAM_INT);
+          $stmt->bindValue(':amount', $this->amount, PDO::PARAM_STR);
+          $stmt->bindValue(':date_of_income', $this->date_of_income, PDO::PARAM_STR);
+          $stmt->bindValue(':income_comment', $this->income_comment, PDO::PARAM_STR);
+          $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+  
+          // Wykonanie zapytania SQL
+          return $stmt->execute();
+      } else {
+          return false; // Zwróć false, jeśli wystąpiły błędy walidacji
+      }
+    }
+}

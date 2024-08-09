@@ -38,11 +38,11 @@
 </button>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false">
+<div class="modal fade" id="incomeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <h1 class="modal-title fs-5" id="incomeModalLabel">Modal title</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -59,7 +59,7 @@
               <select id="incomeCategoryId" name="income_category_assigned_to_user_id" title="select"  class="form-select">
       
                 {% for incomeCategory in incomeCategories %}
-                  <option id="incomeCategoryIdOption" value="{{ incomeCategory.id }}" >{{ incomeCategory.name }}</option>
+                  <option value="{{ incomeCategory.id }}" >{{ incomeCategory.name }}</option>
                 {% endfor %}
       
               </select>
@@ -67,13 +67,13 @@
             </div>
 
             <div class="input-group">
-              <input type="date" name="date_of_income" id="dateOfIncome" placeholder="Date" value="{{ today }}">
+              <input type="date" name="date_of_income" id="dateOfIncome" placeholder="Date" value="{{ today }}" required>
               <label for="dateOfIncome"></label>
             </div>
 
             <div class="input-group">
               <span class="input-group-text">Comment</span>
-              <textarea name="income_comment" class="form-control" aria-label="With textarea"></textarea>
+              <textarea id="incomeComment" name="income_comment" class="form-control" aria-label="With textarea"></textarea>
             </div>
 
             
