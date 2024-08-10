@@ -6,207 +6,97 @@
 
 
 <div class="con-add-expense">
-  <div id="add-expense-main-content" class="container-fluid">
-    <div class="row pt-3">
-      <h3>Add new Expense</h3>
-    </div> 
-    <div class="col">
-      <div class="input-group">
-        <div class="form-floating ">
-          <input type="text" class="form-control" id="floatingAmount" placeholder="Amount">
-          <label for="floatingAmount">Amount</label>
-        </div>
-        <span class="input-group-text">PLN</span>
-      </div>
-      <div class="col">
-        <div class="input-group">
-          <input type="date" name="dateOfExpense" id="dateofbirth" placeholder="Date">
-        </div>
-      </div>
-    <div class="col">
-      <div class="input-group">
-        <select class="form-select" aria-label="Expense category select">
-          <option value="1">Food</option>
-          <option value="2">Housing</option>
-          <option value="3">Transportation</option>
-          <option value="4">Telecommunications</option>
-          <option value="5">Healthcare</option>
-          <option value="6">Clothing</option>
-          <option value="7">Hygiene</option>
-          <option value="8">Children</option>
-          <option value="9">Entertainment</option>
-          <option value="10">Excursion</option>
-          <option value="11">Training</option>
-          <option value="12">Books</option>
-          <option value="13">Savings</option>
-          <option value="14">Retirement</option>
-          <option value="15">Repayment of debts</option>
-          <option value="16">Donation</option>
-          <option value="17">Other expenses</option>
-        </select>
-      </div>
-    </div>
-    <div class="col">
-      <div class="input-group">
-        <span class="input-group-text">Comment</span>
-        <textarea class="form-control" aria-label="With textarea"></textarea>
-      </div>
-    </div>
-    <div class="col" style="text-align: center;">
-      <button type="button" class="btn btn-dark btn-sm">Add expense</button>
-    </div>
-    </div>
+
+  <h3>Review Expenses</h3>
+  <hr>
+  <div class="buttons-area my-3">
+    <button id="add-expense-button" type="button" class="btn btn-success"data-bs-toggle="modal" data-bs-target="#expenseModal">Add</button>
+    <button id="edit-expense-button" type="button" class="btn btn-warning disabled"data-bs-toggle="modal" data-bs-target="#expenseModal">Edit</button>
+    <button id="delete-expense-button" type="button" class="btn btn-danger disabled"data-bs-toggle="modal" data-bs-target="#expenseModal">Delete</button>
+  </div>
+  <div class="table-responsive">
+    
+    <table id="expenses-table" class="table display">
+      <thead>
+        <tr>
+          <th id="th_id">Id</th>
+          <th id="th_expense_category_assigned_to_user_id">Category id</th>
+          <th id="th_payment_method_assigned_to_user_id">Payment id</th>
+          <th>Category</th>
+          <th>Amount [PLN]</th>
+          <th>Payment method</th>
+          <th>Date</th>
+          <th>Comment</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+      
+    </table>
   </div>
 
-  <div id="comparison-exp" class="container-fluid">
-    <div class="col-lg-12 pt-3">
-      <div class="col-lg-12 d-flex justify-content-center">
-        <h3>Review</h3>
+  <!-- Modal -->
+  <div class="modal fade" id="expenseModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="false">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="expenseModalLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="/expense/add" method="post" id="formAddExpense">
+
+            <div class="input-group">
+              <div class="form-floating ">
+                <input type="number" class="form-control" id="expenseAmount" placeholder="Amount" name="amount" step="0.01" min="0.01" required> 
+                <label for="expenseAmount">Amount</label>
+              </div>
+              <span class="input-group-text">PLN</span>
+          
+              <div class="input-group">
+                <select id="expenseCategoryId" name="expense_category_assigned_to_user_id" title="select"  class="form-select">
+        
+                  {% for expenseCategory in expenseCategories %}
+                    <option value="{{ expenseCategory.id }}" >{{ expenseCategory.name }}</option>
+                  {% endfor %}
+        
+                </select>
+                <label for="expenseCategoryId"></label>
+              </div>
+
+              <div class="input-group d-flex">
+                
+                <select id="expensePaymentMethodId" name="expense_payment_method_assigned_to_user_id" title="select"  class="form-select">
+        
+                  {% for expensePaymentMethod in expensePaymentMethods %}
+                    <option value="{{ expensePaymentMethod.id }}" >{{ expensePaymentMethod.name }}</option>
+                  {% endfor %}
+        
+                </select>
+                <label for="expensePaymentMethodId"></label>
+              </div>
+
+              <div class="input-group">
+                <input type="date" name="date_of_expense" id="dateOfexpense" placeholder="Date" value="{{ today }}" required>
+                <label for="dateOfexpense"></label>
+              </div>
+
+              <div class="input-group">
+                <span class="input-group-text">Comment</span>
+                <textarea id="expenseComment" name="expense_comment" class="form-control" aria-label="With textarea"></textarea>
+              </div>
+
+              
+            </div>
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button id="expenseModalSubmitButton" type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </form>
       </div>
-      <div class="dropstart" style="position:absolute; right: 2rem; top: 1rem ">
-        <button type="button" class="btn btn-dark btn-sm dropdown-toggle mx-3" data-bs-toggle="dropdown" aria-expanded="false">
-          Sort
-        </button>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Category A-Z</a></li>
-          <li><a class="dropdown-item" href="#">Date</a></li>
-          <li><a class="dropdown-item" href="#">Amount</a></li>
-        </ul>
-      </div>
-      
     </div>
-    <div class="col-lg-12">
-      <table class="table table-main">
-        <thead>
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Category</th>
-            <th scope="col">Date</th>
-            <th scope="col">Amount[PLN]</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Delete</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>ON</td>
-            <td>Transportation</td>
-            <td>2023-06-04</td>
-            <td>280.65</td>
-            <td>
-              <button type="button" class="btn btn-dark btn-sm" >
-                <i class="bi bi-pencil"></i>
-            </button></td>
-            <td>
-              <button type="button" class="btn btn-dark btn-sm" >
-                <i class="bi bi-x"></i>
-            </button></td>
-          </tr>
-          <tr>
-            <td>Medicines</td>
-            <td>Healthcare</td>
-            <td>2023-06-04</td>
-            <td>111.80</td>
-            <td>
-              <button type="button" class="btn btn-dark btn-sm">
-                <i class="bi bi-pencil"></i>
-            </button></td>
-            <td>
-              <button type="button" class="btn btn-dark btn-sm" >
-                <i class="bi bi-x"></i>
-            </button></td>
-            
-          </tr>
-          <tr>
-            <td>Grocery</td>
-            <td>Food</td>
-            <td>2023-06-03</td>
-            <td>187.52</td>
-            <td>
-              <button type="button" class="btn btn-dark btn-sm" >
-                <i class="bi bi-pencil"></i>
-            </button></td>
-            <td>
-              <button type="button" class="btn btn-dark btn-sm" >
-                <i class="bi bi-x"></i>
-            </button></td>
-          </tr>
-          <tr>
-            <td>Toys</td>
-            <td>Children</td>
-            <td>2023-06-02</td>
-            <td>99.90</td>
-            <td>
-              <button type="button" class="btn btn-dark btn-sm" >
-                <i class="bi bi-pencil"></i>
-            </button></td>
-            <td>
-              <button type="button" class="btn btn-dark btn-sm" >
-                <i class="bi bi-x"></i>
-            </button></td>
-          </tr>
-          <tr>
-            <td>Cinema 3D</td>
-            <td>Entertainment</td>
-            <td>2023-06-01</td>
-            <td>64.39</td>
-            <td>
-              <button type="button" class="btn btn-dark btn-sm" >
-                <i class="bi bi-pencil"></i>
-            </button></td>
-            <td>
-              <button type="button" class="btn btn-dark btn-sm" >
-                <i class="bi bi-x"></i>
-            </button></td>
-          </tr>
-          <tr>
-            <td>Workout</td>
-            <td>Training</td>
-            <td>2023-06-01</td>
-            <td>35.00</td>
-            <td>
-              <button type="button" class="btn btn-dark btn-sm" >
-                <i class="bi bi-pencil"></i>
-            </button></td>
-            <td>
-              <button type="button" class="btn btn-dark btn-sm" >
-                <i class="bi bi-x"></i>
-            </button></td>
-          </tr>
-          <tr>
-            <td>Thunderbird</td>
-            <td>Donation</td>
-            <td>2023-06-01</td>
-            <td>50.00</td>
-            <td>
-              <button type="button" class="btn btn-dark btn-sm" >
-                <i class="bi bi-pencil"></i>
-            </button></td>
-            <td>
-              <button type="button" class="btn btn-dark btn-sm" >
-                <i class="bi bi-x"></i>
-            </button></td>
-          </tr>
-          <tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="col-lg-12 d-flex justify-content-center">
-        <ul class="pagination pagination-sm">
-          <li class="page-item">
-            <a class="bg-white text-dark page-link">Previous</a>
-          </li>
-          <li class="page-item"><a class="bg-white text-dark page-link" href="#">1</a></li>
-          <li class="page-item active " aria-current="page">
-            <a class="bg-white text-dark page-link" href="#">2</a>
-          </li>
-          <a class="bg-white text-dark page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="bg-white text-dark page-link" href="#">Next</a>
-          </li>
-        </ul>
-    </div>
-    
   </div>
 </div>
 

@@ -73,7 +73,6 @@
 
   .con-settings {
     display: grid;
-
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 2fr;
     grid-template-areas: 
@@ -88,7 +87,7 @@
     border-radius: 1rem;
   }
 
-  .con-add-income {
+  .con-add-income .con-add-expense{
     display: flex;
     flex-direction: column;
     font-family: 'DM Serif Display', serif;
@@ -100,23 +99,15 @@
     text-align: center;
   }
 
-  .con-add-income >* {
+  .con-add-expense h3 {
+    text-align: center;
+  }
+
+  .con-add-income .con-add-expense >* {
     border-radius: 1rem;
   }
 
-  .con-add-expense {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows:  2fr ;
-    grid-template-areas:
-    "expense-main comparison-exp";
-    grid-gap: 1rem;
-    font-family: 'DM Serif Display', serif;
-    padding-bottom: 1rem;
-    min-height: 600px;
-  }
-
-  .con-add-expense >* {
+  .con-add-income .con-add-expense >* {
     border-radius: 1rem;
   }
 
@@ -151,7 +142,7 @@
 
   .table-main {
     width: 100%;
-    table-layout: fixe;
+    table-layout:fixed;
     overflow: scroll;
   }
 
@@ -269,20 +260,13 @@
     text-align: center;
     padding: 50px 0 50px 0;
   }
-
-  .income-table {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;  
-  }
   
 
   /* Id's */
 
-  #th_id #th_income_category_assigned_to_user_id{
+  #th_id #th_income_category_assigned_to_user_id #th_expense_category_assigned_to_user_id #th_payment_method_assigned_to_user_id {
     visibility: hidden;
   }
-
 
   #select-period {
     grid-area: select-period;
@@ -652,17 +636,7 @@
     padding-bottom: 1rem;
   }
 
-  .con-add-income {
-    padding-bottom: 1rem;
-  }
-
-  .con-add-expense {
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr;
-    grid-template-areas: 
-    "expense-main"
-    "comparison-exp"
-    ;
+  .con-add-income .con-add-expense{
     padding-bottom: 1rem;
   }
 
@@ -739,12 +713,8 @@
     font-size: 20px;
   }
 
-  #add-income-main-content {
+  #add-income-main-content  #add-expense-main-content{
     align-items: center;
-    padding-bottom: 1rem;
-  }
-
-  #add-expense-main-content {
     padding-bottom: 1rem;
   }
 
