@@ -51,7 +51,7 @@ $('#edit-income-button').on('click', function() {
 
   $('#incomeModalLabel').html('Edit Income Details');
   $('#incomeModalSubmitButton').html('Save changes');
-  $('#incomeModalSubmitButton');
+
 
   $('#formAddIncome').attr('action', '/incomes/edit');
   
@@ -81,7 +81,6 @@ $('#edit-income-button').on('click', function() {
   }
 
 });
-
 
 
 $('#delete-income-button').on('click',function() {
@@ -131,6 +130,7 @@ $('#incomeModal').on('hide.bs.modal', function() {
   $('#dateOfIncome').val(getTodayDate()).attr('disabled', false);
   $('#incomeComment').val('').attr('disabled', false);
   $('#incomeModalSubmitButton').html('').attr('disabled', false);
+  $('#formAddIncome')[0].reset();
 
 });
 
@@ -164,7 +164,6 @@ $(document).on('click', function(event) {
     $('#delete-income-button').addClass('disabled');
   }
 });
-
 
 /**
          * Add jQuery Validation plugin method for a valid password
