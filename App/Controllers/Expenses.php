@@ -36,7 +36,7 @@ class Expenses extends Authenticated
         'amount' => $_POST['amount'],
         'date_of_expense' => $_POST['date_of_expense'],
         'expense_comment' => $_POST['expense_comment'],
-        'today' => $_POST['today'],
+        'today' => $today,
 
       ]);
 
@@ -44,8 +44,85 @@ class Expenses extends Authenticated
 
   }
 
-  public function showAction()
-  {
-    View::renderTemplate('Expenses/show.html');
+  public function showAction() {
+
+    $user = Auth::getUser();
+    $expenseCategories = $user -> getCategories($user->id, 'expense');
+    $paymentMethods = $user -> getCategories($user->id, 'payment');
+    $today = date('Y-m-d');
+
+    View::renderTemplate('Expenses/show.html', [
+      'user' => $this -> user,
+      'expenseCategories' => $expenseCategories,
+      'paymentMethods' => $paymentMethods,
+      'today' => $today
+    ]);
+
   }
+
+  public function getAction() {
+
+    $expenses = Expense::getExpensesByUserId();
+    echo $expenses;
+
+  }
+
+  public function editAction() {
+
+    $expenseId = $_POST['id'];
+    $expense = Expense::findById($expenseId);
+
+    if ($expense) {
+
+      $expense->expense_category_assigned_to_user_id = $_POST['expense_category_assigned_to_user_id'];
+      $expense->payment_method_assigned_to_user_id = $_POST['payment_method_assigned_to_user_id'];
+      $expense->amount = $_POST['amount'];
+      $expense->date_of_expense = $_POST['date_of_expense'];
+      $expense->expense_comment = $_POST['expense_comment'];
+
+      if ($expense->editExpense($_POST)) {
+        Flash::addMessage('Changes saved');
+        $this->redirect('/expenses/show');
+      } else {
+        Flash::addMessage('Something went wrong. Please try again.', Flash::WARNING);
+        $this->redirect('/expenses/show');
+      }
+
+    } else {
+
+      Flash::addMessage('Expense record not found.', Flash::WARNING);
+      $this->redirect('/expenses/show');
+
+    }
+
+  }
+
+  public function deleteAction() {
+
+    $ExpenseId = $_POST['id'];
+
+    $expense = Expense::findById($ExpenseId);
+
+    if ($expense) {
+
+      if($expense->deleteExpense($_POST)) {
+
+        Flash::addMessage('Expense deleted successfully.');
+        $this->redirect('/expenses/show');
+
+      } else {
+
+        Flash::addMessage('Something went wrong. Please try again.', Flash::WARNING);
+        $this->redirect('/expenses/show');
+
+      }
+
+    } else {
+
+      Flash::addMessage('Expense record not found.', Flash::WARNING);
+      $this->redirect('/expenses/show');
+
+    }
+}
+
 }

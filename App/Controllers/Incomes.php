@@ -93,7 +93,7 @@ class Incomes extends Authenticated
       $this->redirect('/incomes/show');
 
     }
-}
+  }
 
 
   public function showAction()

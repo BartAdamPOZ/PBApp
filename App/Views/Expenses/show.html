@@ -23,8 +23,8 @@
           <th id="th_expense_category_assigned_to_user_id">Category id</th>
           <th id="th_payment_method_assigned_to_user_id">Payment id</th>
           <th>Category</th>
-          <th>Amount [PLN]</th>
           <th>Payment method</th>
+          <th>Amount [PLN]</th>
           <th>Date</th>
           <th>Comment</th>
         </tr>
@@ -64,21 +64,21 @@
                 <label for="expenseCategoryId"></label>
               </div>
 
-              <div class="input-group d-flex">
+              <div class="input-group">
                 
-                <select id="expensePaymentMethodId" name="expense_payment_method_assigned_to_user_id" title="select"  class="form-select">
+                <select id="paymentMethodId" name="payment_method_assigned_to_user_id" title="select"  class="form-select">
         
-                  {% for expensePaymentMethod in expensePaymentMethods %}
-                    <option value="{{ expensePaymentMethod.id }}" >{{ expensePaymentMethod.name }}</option>
+                  {% for paymentMethod in paymentMethods %}
+                    <option value="{{ paymentMethod.id }}" >{{ paymentMethod.name }}</option>
                   {% endfor %}
         
                 </select>
-                <label for="expensePaymentMethodId"></label>
+                <label for="paymentMethodId"></label>
               </div>
 
               <div class="input-group">
-                <input type="date" name="date_of_expense" id="dateOfexpense" placeholder="Date" value="{{ today }}" required>
-                <label for="dateOfexpense"></label>
+                <input type="date" name="date_of_expense" id="dateOfExpense" placeholder="Date" value="{{ today }}" required>
+                <label for="dateOfExpense"></label>
               </div>
 
               <div class="input-group">
