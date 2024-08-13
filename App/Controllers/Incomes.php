@@ -19,7 +19,9 @@ class Incomes extends Authenticated
     $income = new Income($_POST);
     $today = date('Y-m-d');
 
-    if($income -> save() && !empty($_POST['income_category_assigned_to_user_id'])) {
+    if(!empty($_POST['income_category_assigned_to_user_id'])) {
+
+      $income -> save();
 
       Flash::addMessage('Income added successfully.');
 
@@ -29,13 +31,7 @@ class Incomes extends Authenticated
 
       Flash::addMessage("No category selected! Go to Settings and add one or press 'Restore all categories'.", Flash::WARNING);
 
-      View::renderTemplate('/Incomes/show.html', [
-          'amount' => $_POST['amount'],
-          'date_of_income' => $_POST['date_of_income'],
-          'income_comment' => $_POST['income_comment'],
-          'today' => $today
-      ]);
-
+      $this -> redirect('/incomes/show');
     }
   }
 

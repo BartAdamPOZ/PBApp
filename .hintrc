@@ -1,6 +1,6 @@
 {
   "extends": [
-    "development"
+    "recommended"
   ],
   "hints": {
     "axe/structure": [

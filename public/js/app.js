@@ -146,9 +146,15 @@ $('#incomeModal').on('hide.bs.modal', function() {
 $('#incomes-table tbody').on('click', 'tr', function(event) {
   event.stopPropagation();
 
+  if($(this).attr('data-id')) {
+    
+    $('#incomes-table tbody tr').removeClass('selected');
+
     $(this).addClass('selected');
     $('#edit-income-button').removeClass('disabled');
     $('#delete-income-button').removeClass('disabled');
+
+  }
 
 });
 
@@ -324,10 +330,16 @@ $('#expenseModal').on('hide.bs.modal', function() {
 $('#expenses-table tbody').on('click', 'tr', function(event) {
   event.stopPropagation();
 
+  if($(this).attr('data-id')) {
+
+    $('#expenses-table tbody tr').removeClass('selected');
+
     $(this).addClass('selected');
     $('#edit-expense-button').removeClass('disabled');
     $('#delete-expense-button').removeClass('disabled');
 
+  }
+    
 });
 
 /** This action works when row is selected and user click outside the table. Set edit and delete buttons disabled. Remove selection from row. */
