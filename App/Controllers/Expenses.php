@@ -119,6 +119,14 @@ class Expenses extends Authenticated
       $this->redirect('/expenses/show');
 
     }
-}
+  }
+
+  public function fetchAction() {
+
+    $expenses_chart_data = Expense::getExpensesDataForCharts();
+    echo $expenses_chart_data;
+
+  }
+
 
 }

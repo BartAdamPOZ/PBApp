@@ -111,25 +111,72 @@
     border-radius: 1rem;
   }
 
+
+  /** Review */
   .con-review {
     display: grid;
-    grid-template-columns: 0.7fr 1fr 1fr;
-    grid-template-rows: 0.25fr 1fr 0.5fr 0.5fr;
+    grid-template-columns: 0.33fr 0.33fr 0.33fr ;
+    grid-template-rows: 0.10fr 0.20fr 0.70fr;
     grid-template-areas: 
-    "select-period select-period select-period"
-    "inc-top3 pie-chart-inc pie-chart-exp"
-    "exp-top3 pie-chart-inc pie-chart-exp"
-    "exp-top3 balance balance"
+    "select-range select-range select-range"
+    "balance-area balance-area balance-area"
+    "bar-chart bar-chart pie-chart"
     ;
     grid-gap: 1rem;
     font-family: 'DM Serif Display', serif;
     padding-bottom: 1rem;
   }
 
+
+
   .con-review >* {
     border-radius: 1rem;
   }
 
+  .card-review {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background-color: #F3F5F7;
+  }
+
+  #balance-area {
+    grid-area: balance-area;
+    background-color: #F3F5F7;
+    display: flex;
+    justify-content: space-evenly;
+    height: 20vh;
+  }
+
+  #balance-area >* {
+    border-radius: 1rem;
+    margin: 1em;
+    padding: 2em;
+  }
+
+  #select-range {
+    grid-area: select-range;
+    background-color:#F3F5F7 ;
+  }
+
+  .bar-chart {
+    background-color: #F3F5F7;
+    grid-area: bar-chart;
+  }
+
+  .pie-chart {
+    background-color: #F3F5F7;
+    grid-area: pie-chart;
+    display: flex;
+    flex-direction: column;
+    padding: 1em 2em 3em 2em;
+  }
+
+
+  /**Toggle */
+ 
 /* classes */
   .buttons-area {
     display: flex;
@@ -138,6 +185,11 @@
 
   .buttons-area >* {
     width: 30%;
+  }
+
+  .buttons-area-charts {
+    display: flex;
+    justify-content: center;
   }
 
   .table-main {
@@ -165,12 +217,6 @@
     align-items: center;
   }
 
-  .sum {
-    display: flex;
-    font-size: 20px;
-    text-align: center;
-    flex-direction:column-reverse;
-  }
 
   form.categoryForms {
     display: inherit;
@@ -198,59 +244,6 @@
     padding-left: 5rem;
   }
 
-  .pieContainer {
-    height: 150px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .pieBackground {
-    position: absolute;
-    width: 150px;
-    height: 150px;
-    border-radius: 100%;
-    box-shadow: 0px 0px 8px rgba(0,0,0,0.5);
-  } 
-
-  .pie {
-    transition: all 1s;
-    position: absolute;
-    width: 150px;
-    height: 150px;
-    border-radius: 100%;
-    clip: rect(0px, 75px, 150px, 0px);
-  }
-
-  .hold {
-    position: absolute;
-    width: 150px;
-    height: 150px;
-    border-radius: 100%;
-    clip: rect(0px, 150px, 150px, 75px);
-  }
-
-  .innerCircle {
-    position: absolute;
-    width: 120px;
-    height: 120px;
-    background-color: #444;
-    border-radius: 100%;
-    top: 15px;
-    left: 15px; 
-    box-shadow: 0px 0px 8px rgba(0,0,0,0.5) inset;
-    color: white;
-  }
-  .innerCircle .content {
-    position: absolute;
-    display: block;
-    width: 120px;
-    top: 30px;
-    left: 0;
-    text-align: center;
-    font-size: 14px;
-  }
-
   .headerOfEditPersonalData {
     text-align: center;
   }
@@ -264,86 +257,12 @@
 
   /* Id's */
 
-  #th_id #th_income_category_assigned_to_user_id #th_expense_category_assigned_to_user_id #th_payment_method_assigned_to_user_id {
+  #th_id #th_income_category_assigned_to_user_id 
+  #th_expense_category_assigned_to_user_id 
+  #th_payment_method_assigned_to_user_id {
     visibility: hidden;
   }
 
-  #select-period {
-    grid-area: select-period;
-    display: flex;
-    background-color: #F3F5F7;
-    align-items: center;
-    padding-right: 1rem;
-    justify-content: center;
-  }
-
-  #inc-top3 {
-    display: flex;
-    background-color: #C7F2A4;
-    grid-area: inc-top3;
-    align-items: center;
-    flex-direction: column;
-    text-align: center;
-    padding-top: 1rem;
-    justify-content: space-evenly;
-    font-size: 12px;
-  }
-
-  #exp-top3 {
-    display: flex;
-    background-color: #FFF3E2;
-    grid-area: exp-top3;
-    align-items: center;
-    flex-direction: column;
-    text-align: center;
-    padding-top: 1rem;
-    justify-content: space-evenly;
-    font-size: 12px;
-  }
-
-  #pie-chart-inc {
-    display:flex;
-    background-color: #F3F5F7;
-    grid-area: pie-chart-inc;
-    font-size: 12px;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    position: relative;
-  }
-
-  #pie-chart-exp {
-    display: flex;
-    background-color: #F3F5F7;
-    grid-area: pie-chart-exp;
-    font-size: 12px;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    position: relative;
-  }
-
-  #comparison-inc {
-    display: flex;
-    background-color: #F3F5F7;
-    font-size: 12px;
-    align-items: center;
-    justify-content: flex-start;
-    flex-direction: column;
-    width: -webkit-fill-available;
-    
-  }
-
-  #comparison-exp {
-    display: flex;
-    background-color: #F3F5F7;
-    grid-area: comparison-exp;
-    font-size: 12px;
-    align-items: center;
-    justify-content: flex-start;
-    flex-direction: column;
-    position: relative;
-  }
 
   #balance {
     display: flex;

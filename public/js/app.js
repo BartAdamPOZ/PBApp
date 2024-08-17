@@ -353,6 +353,163 @@ $(document).on('click', function(event) {
 });
 
 
+/** DateRangePicker test */
+
+
+  fetch_data();
+
+  var income_expense_chart;
+
+  function fetch_data() {
+
+  }
+
+  $('#daterange_textbox').daterangepicker({
+    showDropdowns: true,
+    ranges: {
+        'Today': [moment(), moment()],
+        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+        'This Month': [moment().startOf('month'), moment().endOf('month')],
+        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+    },
+    format: 'YYYY-MM-DD'
+  }, function(start, end, label) {
+    console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+  });
+
+
+  makechartIncomes();
+
+  function makechartIncomes() {
+    $.ajax({
+      url: '/incomes/fetchAction',
+      method: 'POST',
+      dataType: 'JSON',
+      success: function(data) {
+        var category_name = [];
+        var total = [];
+        var color = [];
+
+        for (var count = 0; count < data.length; count++) {
+          category_name.push(data[count].category_name);
+          total.push(data[count].total);
+          color.push(data[count].color);
+        }
+
+        var chart_data = {
+          labels:category_name,
+          datasets:[
+            {
+              label: 'Amount',
+              backgroundColor: color,
+              color: '#fff',
+              data:total
+            }
+          ]
+        };
+        var options = {
+          responsive:true,
+          
+        };
+        
+        
+        var barchart = $('#bar_chart');
+
+        var graph = new Chart(barchart, {
+          type: 'bar',
+          data:chart_data,
+          options: options,
+          plugins: [ChartDataLabels],
+          
+        });
+
+        var piechart = $('#pie_chart_incomes');
+
+        var graph2 = new Chart(piechart, {
+          type: 'pie',
+          data:chart_data          
+        });
+      }
+
+    })
+  }
+
+  makechartExpenses();
+
+  function makechartExpenses() {
+    
+    $.ajax({
+      url: '/expenses/fetchAction',
+      method: 'POST',
+      dataType: 'JSON',
+      success: function(data_expenses) {
+        var category_name_expenses = [];
+        var total = [];
+        var color = [];
+
+        for (var count = 0; count < data_expenses.length; count++) {
+          category_name_expenses.push(data_expenses[count].category_name_expenses);
+          total.push(data_expenses[count].total);
+          color.push(data_expenses[count].color);
+        }
+
+        var chart_data_expenses = {
+          labels:category_name_expenses,
+          datasets:[
+            {
+              label: 'Amount',
+              backgroundColor: color,
+              color: '#fff',
+              data:total
+            }
+          ]
+        };
+        var options = {
+          responsive:true,
+          
+        };
+
+        var piechart_expenses = $('#pie_chart_expenses');
+
+        var graph3 = new Chart(piechart_expenses, {
+          type: 'pie',
+          data:chart_data_expenses          
+        });
+      }
+
+    })
+  }
+
+
+  $('#expense-button-chart').on('click', function() {
+    // Sprawdź, czy przycisk ma klasę btn-outline-secondary
+    if ($(this).hasClass('btn-outline-secondary')) {
+        // Usuń klasę btn-outline-secondary i dodaj btn-success
+        $(this).removeClass('btn-outline-secondary').addClass('btn-success');
+        $('#pie_chart_incomes').attr('hidden', true);
+    }
+
+    // Usuń z income-button-chart klasę btn-success i dodaj btn-outline-secondary
+    $('#income-button-chart').removeClass('btn-success').addClass('btn-outline-secondary');
+    $('#pie_chart_expenses').removeAttr('hidden');
+  });
+
+  $('#income-button-chart').on('click', function() {
+    // Sprawdź, czy przycisk ma klasę btn-outline-secondary
+    if ($(this).hasClass('btn-outline-secondary')) {
+        // Usuń klasę btn-outline-secondary i dodaj btn-success
+        $(this).removeClass('btn-outline-secondary').addClass('btn-success');
+        $('#pie_chart_expenses').attr('hidden', true);
+    }
+
+    // Usuń z expense-button-chart klasę btn-success i dodaj btn-outline-secondary
+    $('#expense-button-chart').removeClass('btn-success').addClass('btn-outline-secondary');
+    $('#pie_chart_incomes').removeAttr('hidden');
+  });
+
+
 /**
          * Add jQuery Validation plugin method for a valid password
          *

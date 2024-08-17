@@ -115,5 +115,11 @@ class Incomes extends Authenticated
 
   }
 
+  public function fetchAction() {
 
+    $incomes_chart_data = Income::getIncomesDataForCharts();
+    echo $incomes_chart_data;
+
+  }
+  
 }
