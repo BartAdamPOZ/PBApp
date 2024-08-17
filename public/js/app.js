@@ -356,131 +356,307 @@ $(document).on('click', function(event) {
 /** DateRangePicker test */
 
 
-  fetch_data();
 
-  var income_expense_chart;
-
-  function fetch_data() {
-
-  }
-
+  // Inicjalizacja daterangepicker
   $('#daterange_textbox').daterangepicker({
-    showDropdowns: true,
-    ranges: {
-        'Today': [moment(), moment()],
-        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-        'This Month': [moment().startOf('month'), moment().endOf('month')],
-        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-    },
-    format: 'YYYY-MM-DD'
+      showDropdowns: true,
+      ranges: {
+          'Today': [moment(), moment()],
+          'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+          'This Month': [moment().startOf('month'), moment().endOf('month')],
+          'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+          'This Year' : [moment().startOf('year'), moment().endOf('year')]
+      },
+      format: 'YYYY-MM-DD',
+      startDate: moment().startOf('month'),
+      endDate: moment().endOf('month')
   }, function(start, end, label) {
-    console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+      console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+      refreshCharts(start, end);
   });
 
+  // Wywołanie funkcji wykresów z domyślnym zakresem dat po załadowaniu strony
+  var startDate = moment().startOf('month');
+  var endDate = moment().endOf('month');
+  refreshCharts(startDate, endDate);
 
-  makechartIncomes();
 
-  function makechartIncomes() {
-    $.ajax({
+function refreshCharts(start, end) {
+  makePieChartIncomes(start, end);
+  makePieChartExpenses(start, end);
+  makeBarChart(start, end);
+}
+
+function makePieChartIncomes(start, end) {
+  $.ajax({
       url: '/incomes/fetchAction',
       method: 'POST',
       dataType: 'JSON',
-      success: function(data) {
-        var category_name = [];
-        var total = [];
-        var color = [];
+      data: {
+          start_date: start.format('YYYY-MM-DD'),
+          end_date: end.format('YYYY-MM-DD')
+      },
+      success: function(data_pie_incomes) {
+          var category_name = [];
+          var total = [];
+          var color = [];
 
-        for (var count = 0; count < data.length; count++) {
-          category_name.push(data[count].category_name);
-          total.push(data[count].total);
-          color.push(data[count].color);
-        }
+          for (var count = 0; count < data_pie_incomes.length; count++) {
+              category_name.push(data_pie_incomes[count].category_name);
+              total.push(data_pie_incomes[count].total);
+              color.push(data_pie_incomes[count].color);
+          }
 
-        var chart_data = {
-          labels:category_name,
-          datasets:[
-            {
-              label: 'Amount',
-              backgroundColor: color,
-              color: '#fff',
-              data:total
-            }
-          ]
-        };
-        var options = {
-          responsive:true,
-          
-        };
-        
-        
-        var barchart = $('#bar_chart');
+          var chart_data_pie_incomes = {
+              labels: category_name,
+              datasets: [{
+                  label: 'Amount',
+                  backgroundColor: color,
+                  borderColor: '#fff',
+                  data: total
+              }]
+          };
 
-        var graph = new Chart(barchart, {
-          type: 'bar',
-          data:chart_data,
-          options: options,
-          plugins: [ChartDataLabels],
-          
-        });
+          var options = {
+              responsive: true,
+              plugins: {
+                  legend: {
+                      position: 'top',
+                  },
+                  tooltip: {
+                      callbacks: {
+                          label: function(context) {
+                              let label = context.label || '';
+                              if (label) {
+                                  label += ': ';
+                              }
+                              if (context.parsed) {
+                                  label += `${context.parsed} PLN`; // Example
+                              }
+                              return label;
+                          }
+                      }
+                  }
+              }
+          };
 
-        var piechart = $('#pie_chart_incomes');
+          // Jeśli piechart już istnieje, należy go usunąć
+          if (window.piechartIncomes) {
+              window.piechartIncomes.destroy();
+          }
 
-        var graph2 = new Chart(piechart, {
-          type: 'pie',
-          data:chart_data          
-        });
+          var piechart = $('#pie_chart_incomes');
+          window.piechartIncomes = new Chart(piechart, {
+              type: 'pie',
+              data: chart_data_pie_incomes,
+              options: options
+          });
+      },
+      error: function(xhr, status, error) {
+          console.error('Error fetching pie chart data:', error);
       }
+  });
+}
 
-    })
-  }
-
-  makechartExpenses();
-
-  function makechartExpenses() {
-    
-    $.ajax({
+function makePieChartExpenses(start, end) {
+  $.ajax({
       url: '/expenses/fetchAction',
       method: 'POST',
       dataType: 'JSON',
-      success: function(data_expenses) {
-        var category_name_expenses = [];
-        var total = [];
-        var color = [];
+      data: {
+          start_date: start.format('YYYY-MM-DD'),
+          end_date: end.format('YYYY-MM-DD')
+      },
+      success: function(data_pie_expenses) {
+          var category_name_expenses = [];
+          var total = [];
+          var color = [];
 
-        for (var count = 0; count < data_expenses.length; count++) {
-          category_name_expenses.push(data_expenses[count].category_name_expenses);
-          total.push(data_expenses[count].total);
-          color.push(data_expenses[count].color);
-        }
+          for (var count = 0; count < data_pie_expenses.length; count++) {
+              category_name_expenses.push(data_pie_expenses[count].category_name_expenses);
+              total.push(data_pie_expenses[count].total);
+              color.push(data_pie_expenses[count].color);
+          }
 
-        var chart_data_expenses = {
-          labels:category_name_expenses,
-          datasets:[
-            {
-              label: 'Amount',
-              backgroundColor: color,
-              color: '#fff',
-              data:total
-            }
-          ]
-        };
-        var options = {
-          responsive:true,
-          
-        };
+          var chart_data_pie_expenses = {
+              labels: category_name_expenses,
+              datasets: [{
+                  label: 'Amount',
+                  backgroundColor: color,
+                  borderColor: '#fff',
+                  data: total
+              }]
+          };
 
-        var piechart_expenses = $('#pie_chart_expenses');
+          var options = {
+              responsive: true,
+              plugins: {
+                  legend: {
+                      position: 'top',
+                  },
+                  tooltip: {
+                      callbacks: {
+                          label: function(context) {
+                              let label = context.label || '';
+                              if (label) {
+                                  label += ': ';
+                              }
+                              if (context.parsed) {
+                                  label += `${context.parsed} PLN`; // Example
+                              }
+                              return label;
+                          }
+                      }
+                  }
+              }
+          };
 
-        var graph3 = new Chart(piechart_expenses, {
-          type: 'pie',
-          data:chart_data_expenses          
-        });
+          // Jeśli piechart już istnieje, należy go usunąć
+          if (window.piechartExpenses) {
+              window.piechartExpenses.destroy();
+          }
+
+          var piechart_expenses = $('#pie_chart_expenses');
+          window.piechartExpenses = new Chart(piechart_expenses, {
+              type: 'pie',
+              data: chart_data_pie_expenses,
+              options: options
+          });
+      },
+      error: function(xhr, status, error) {
+          console.error('Error fetching pie chart expenses data:', error);
       }
+  });
+}
 
-    })
-  }
+function makeBarChart(start, end) {
+  $.ajax({
+      url: '/expenses/fetchbardataAction',
+      method: 'POST',
+      dataType: 'JSON',
+      data: {
+          start_date: start.format('YYYY-MM-DD'),
+          end_date: end.format('YYYY-MM-DD')
+      },
+      success: function(data_bar_expenses) {
+          var combinedData = {};
+
+          // Process expense data
+          for (var i = 0; i < data_bar_expenses.length; i++) {
+              var date = data_bar_expenses[i].date_of_expense;
+              if (!combinedData[date]) {
+                  combinedData[date] = { income: 0, expense: 0 };
+              }
+              combinedData[date].expense = data_bar_expenses[i].total_bar_chart_expense;
+          }
+
+          // Fetch income data
+          $.ajax({
+              url: '/incomes/fetchbardataAction',
+              method: 'POST',
+              dataType: 'JSON',
+              data: {
+                  start_date: start.format('YYYY-MM-DD'),
+                  end_date: end.format('YYYY-MM-DD')
+              },
+              success: function(data_bar_incomes) {
+                  for (var i = 0; i < data_bar_incomes.length; i++) {
+                      var date = data_bar_incomes[i].date_of_income;
+                      if (!combinedData[date]) {
+                          combinedData[date] = { income: 0, expense: 0 };
+                      }
+                      combinedData[date].income = data_bar_incomes[i].total_bar_chart_income;
+                  }
+
+                  // Prepare data for the chart
+                  var dates = [];
+                  var expenses = [];
+                  var incomes = [];
+
+                  for (var date in combinedData) {
+                      dates.push(date);
+                  }
+
+                  dates.sort(function(a, b) {
+                      return new Date(a) - new Date(b);
+                  });
+
+                  for (var i = 0; i < dates.length; i++) {
+                      expenses.push(combinedData[dates[i]].expense);
+                      incomes.push(combinedData[dates[i]].income);
+                  }
+
+                  var chart_data = {
+                      labels: dates,
+                      datasets: [{
+                              label: 'Expenses',
+                              backgroundColor: '#e86471',
+                              data: expenses,
+                              borderWidth: 3,
+                              borderRadius: Number.MAX_VALUE,
+                              borderSkipped: false,
+                          },
+                          {
+                              label: 'Incomes',
+                              backgroundColor: '#3e76de',
+                              data: incomes,
+                              borderWidth: 2,
+                              borderRadius: Number.MAX_VALUE,
+                              borderSkipped: false,
+                          }
+                      ]
+                  };
+
+                  var options = {
+                      responsive: true,
+                      plugins: {
+                          legend: {
+                              position: 'top',
+                          },
+                          tooltip: {
+                              callbacks: {
+                                  label: function(context) {
+                                      let label = context.dataset.label || '';
+                                      if (label) {
+                                          label += ': ';
+                                      }
+                                      if (context.parsed) {
+                                          label += `${context.parsed.y} PLN`; // Example
+                                      }
+                                      return label;
+                                  }
+                              }
+                          }
+                      }
+                  };
+
+                  // Jeśli bar chart już istnieje, należy go usunąć
+                  if (window.barChart) {
+                      window.barChart.destroy();
+                  }
+
+                  var barchart = $('#bar_chart_expenses');
+                  window.barChart = new Chart(barchart, {
+                      type: 'bar',
+                      data: chart_data,
+                      options: options
+                  });
+              },
+              error: function(xhr, status, error) {
+                  console.error('Error fetching bar chart incomes data:', error);
+              }
+          });
+      },
+      error: function(xhr, status, error) {
+          console.error('Error fetching bar chart expenses data:', error);
+      }
+  });
+}
+
+
+
 
 
   $('#expense-button-chart').on('click', function() {

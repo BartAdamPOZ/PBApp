@@ -116,10 +116,19 @@ class Incomes extends Authenticated
   }
 
   public function fetchAction() {
+    $startDate = $_POST['start_date'] ?? null;
+    $endDate = $_POST['end_date'] ?? null;
 
-    $incomes_chart_data = Income::getIncomesDataForCharts();
-    echo $incomes_chart_data;
-
+    $incomes_pie_chart_data = Income::getIncomesDataForPieChart($startDate, $endDate);
+    echo $incomes_pie_chart_data;
   }
-  
+
+  public function fetchbardataAction() {
+    $startDate = $_POST['start_date'] ?? null;
+    $endDate = $_POST['end_date'] ?? null;
+
+    $incomes_bar_chart_data = Income::getIncomesDataForBarChart($startDate, $endDate);
+    echo($incomes_bar_chart_data);
+  }
+
 }

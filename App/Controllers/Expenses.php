@@ -122,10 +122,19 @@ class Expenses extends Authenticated
   }
 
   public function fetchAction() {
+    $startDate = $_POST['start_date'] ?? null;
+    $endDate = $_POST['end_date'] ?? null;
 
-    $expenses_chart_data = Expense::getExpensesDataForCharts();
+    $expenses_chart_data = Expense::getExpensesDataForPieChart($startDate, $endDate);
     echo $expenses_chart_data;
+  }
 
+  public function fetchbardataAction() {
+    $startDate = $_POST['start_date'] ?? null;
+    $endDate = $_POST['end_date'] ?? null;
+
+    $expenses_bar_chart_data = Expense::getExpensesDataForBarChart($startDate, $endDate);
+    echo($expenses_bar_chart_data);
   }
 
 

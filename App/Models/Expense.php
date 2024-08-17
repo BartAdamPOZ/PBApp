@@ -182,46 +182,39 @@ class Expense extends \Core\Model {
 
     }
 
-    public static function getExpensesDataForCharts() {
+    public static function getExpensesDataForPieChart($startDate = null, $endDate = null) {
 
       function generatePastelColor() {
-        
-        $hue = rand(0, 360); 
-        $saturation = rand(25, 50);
-        $lightness = rand(75, 85);  
-    
-        return hslToHex($hue, $saturation, $lightness);
+          $hue = rand(0, 360); 
+          $saturation = rand(25, 50);
+          $lightness = rand(75, 85);  
+          return hslToHex($hue, $saturation, $lightness);
       }
-    
+  
       function hslToHex($h, $s, $l) {
-        $s /= 100;
-        $l /= 100;
-    
-        $c = (1 - abs(2 * $l - 1)) * $s;
-        $x = $c * (1 - abs(fmod($h / 60, 2) - 1));
-        $m = $l - $c / 2;
-    
-        if ($h < 60) {
-            $r = $c; $g = $x; $b = 0;
-        } elseif ($h < 120) {
-            $r = $x; $g = $c; $b = 0;
-        } elseif ($h < 180) {
-            $r = 0; $g = $c; $b = $x;
-        } elseif ($h < 240) {
-            $r = 0; $g = $x; $b = $c;
-        } elseif ($h < 300) {
-            $r = $x; $g = 0; $b = $c;
-        } else {
-            $r = $c; $g = 0; $b = $x;
-        }
-    
-        $r = ($r + $m) * 255;
-        $g = ($g + $m) * 255;
-        $b = ($b + $m) * 255;
-    
-        return sprintf("#%02X%02X%02X", round($r), round($g), round($b));
+          $s /= 100;
+          $l /= 100;
+          $c = (1 - abs(2 * $l - 1)) * $s;
+          $x = $c * (1 - abs(fmod($h / 60, 2) - 1));
+          $m = $l - $c / 2;
+          if ($h < 60) {
+              $r = $c; $g = $x; $b = 0;
+          } elseif ($h < 120) {
+              $r = $x; $g = $c; $b = 0;
+          } elseif ($h < 180) {
+              $r = 0; $g = $c; $b = $x;
+          } elseif ($h < 240) {
+              $r = 0; $g = $x; $b = $c;
+          } elseif ($h < 300) {
+              $r = $x; $g = 0; $b = $c;
+          } else {
+              $r = $c; $g = 0; $b = $x;
+          }
+          $r = ($r + $m) * 255;
+          $g = ($g + $m) * 255;
+          $b = ($b + $m) * 255;
+          return sprintf("#%02X%02X%02X", round($r), round($g), round($b));
       }
-    
   
       $user = Auth::getUser();
   
@@ -230,27 +223,76 @@ class Expense extends \Core\Model {
               FROM expenses e
               JOIN expenses_category_assigned_to_users d
               ON e.expense_category_assigned_to_user_id = d.id
-              WHERE e.user_id = :user_id
-              GROUP BY d.name';
+              WHERE e.user_id = :user_id';
+  
+      if ($startDate && $endDate) {
+          $sql .= " AND e.date_of_expense BETWEEN :start_date AND :end_date";
+      }
+  
+      $sql .= " GROUP BY d.name";
   
       $db = static::getDB();
       $stmt = $db->prepare($sql);
       $stmt->bindValue(':user_id', $user->id, PDO::PARAM_INT);
+  
+      if ($startDate && $endDate) {
+          $stmt->bindParam(':start_date', $startDate);
+          $stmt->bindParam(':end_date', $endDate);
+      }
+  
       $stmt->execute();
   
-      $result =  $stmt->fetchAll(PDO::FETCH_ASSOC);
+      $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
   
       $data = [];
   
       foreach ($result as $row) {
-        $data [] = [    
-          'category_name_expenses' => $row['category_name_expenses'],
-          'total' => $row['Total'],
-          'color' => generatePastelColor() 
-        ];
+          $data[] = [    
+              'category_name_expenses' => $row['category_name_expenses'],
+              'total' => $row['Total'],
+              'color' => generatePastelColor() 
+          ];
       }
       echo json_encode($data);
+    }
+
+    public static function getExpensesDataForBarChart($startDate = null, $endDate = null) {
+
+      $user = Auth::getUser();
   
+      $sql = 'SELECT date_of_expense, SUM(amount) as Total
+              FROM expenses
+              WHERE user_id = :user_id';
+  
+      if ($startDate && $endDate) {
+          $sql .= " AND date_of_expense BETWEEN :start_date AND :end_date";
+      }
+  
+      $sql .= " GROUP BY date_of_expense";
+  
+      $db = static::getDB();
+      $stmt = $db->prepare($sql);
+  
+      if ($startDate && $endDate) {
+          $stmt->bindParam(':start_date', $startDate);
+          $stmt->bindParam(':end_date', $endDate);
+      }
+  
+      $stmt->bindValue(':user_id', $user->id, PDO::PARAM_INT);
+      $stmt->execute();
+  
+      $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  
+      $data = [];
+  
+      foreach ($result as $row) {
+          $data[] = [    
+              'date_of_expense' => $row['date_of_expense'],
+              'total_bar_chart_expense' => $row['Total'],
+              'color' => '#e86471'
+          ];
+      }
+      echo json_encode($data);
     }
 
 
