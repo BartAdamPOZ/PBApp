@@ -15,37 +15,39 @@
     <div class="card-review incomes">
       <div class="card-body">
         <h5 class="card-title">Incomes</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <p id="incomes-sum" class="card-text"></p>
       </div>
     </div>
     <div class="card-review expenses">
       <div class="card-body">
         <h5 class="card-title">Expenses</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <p id="expenses-sum" class="card-text"></p>
       </div>
     </div>
-    <div class="card-review savings">
+    <div class="card-review balance">
       <div class="card-body">
-        <h5 class="card-title">Savings</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <h5 class="card-title">Balance</h5>
+        <p id="balance-sum" class="card-text"></p>
       </div>
     </div>
   </div>
 
   
-
-  <div class="bar-chart" >
-    <canvas id="bar_chart_expenses"></canvas>
-  </div>
-
-  <div class="pie-chart">
-    <div class="buttons-area-charts my-3">
-      <button id="income-button-chart" class="btn btn-lg btn-success mx-2 ">Incomes</button>
-      <button id="expense-button-chart" class="btn btn-lg btn-outline-secondary mx-2">Expenses</button>
+  <div class="charts-area">
+    <div class="bar-chart" >
+      <canvas id="bar_chart_expenses"></canvas>
     </div>
-    <canvas id="pie_chart_incomes"></canvas>
-    <canvas id="pie_chart_expenses" hidden></canvas>
+  
+    <div class="pie-chart">
+      <div class="buttons-area-charts my-3">
+        <button id="income-button-chart" class="btn btn-lg btn-success mx-2 ">Incomes</button>
+        <button id="expense-button-chart" class="btn btn-lg btn-outline-secondary mx-2">Expenses</button>
+      </div>
+      <canvas id="pie_chart_incomes"></canvas>
+      <canvas id="pie_chart_expenses" hidden></canvas>
+    </div>
   </div>
+  
   
 </div>
 

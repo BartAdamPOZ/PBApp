@@ -114,16 +114,13 @@
 
   /** Review */
   .con-review {
-    display: grid;
-    grid-template-columns: 0.33fr 0.33fr 0.33fr ;
-    grid-template-rows: 0.10fr 0.20fr 0.70fr;
-    grid-template-areas: 
-    "select-range select-range select-range"
-    "balance-area balance-area balance-area"
-    "bar-chart bar-chart pie-chart"
-    ;
+    grid-template-columns: 32.5% 33% 32.5%;
+    grid-template-rows: 10% 20% 70%;
+    grid-template-areas:
+        "select-range select-range select-range"
+        "balance-area balance-area balance-area"
+        "bar-chart bar-chart pie-chart";
     grid-gap: 1rem;
-    font-family: 'DM Serif Display', serif;
     padding-bottom: 1rem;
   }
 
@@ -135,19 +132,17 @@
 
   .card-review {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
+    width: -webkit-fill-available;
+    height: auto;
     background-color: #F3F5F7;
   }
 
   #balance-area {
     grid-area: balance-area;
-    background-color: #F3F5F7;
     display: flex;
-    justify-content: space-evenly;
-    height: 20vh;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
   }
 
   #balance-area >* {
@@ -159,23 +154,31 @@
   #select-range {
     grid-area: select-range;
     background-color:#F3F5F7 ;
+    margin: 1rem;
+    padding: 1rem;
+    height: fit-content;
   }
 
+  .charts-area {
+    background-color: #F3F5F7 ;
+    border-radius: 1rem;
+  }
+
+
   .bar-chart {
-    background-color: #F3F5F7;
     grid-area: bar-chart;
+    padding: 2rem;
   }
 
   .pie-chart {
-    background-color: #F3F5F7;
     grid-area: pie-chart;
     display: flex;
     flex-direction: column;
-    padding: 1em 2em 3em 2em;
+    padding: 2rem;
   }
 
 
-  /**Toggle */
+
  
 /* classes */
   .buttons-area {
@@ -256,6 +259,13 @@
   
 
   /* Id's */
+
+  #bar_chart_expenses, 
+  #pie_chart_incomes, 
+  #pie_chart_expenses {
+    max-width: 100%;
+    height: 400px;
+  }
 
   #th_id #th_income_category_assigned_to_user_id 
   #th_expense_category_assigned_to_user_id 
@@ -531,7 +541,7 @@
   } 
 
 
-@media only screen and (max-width:1024px) {
+  @media only screen and (min-width: 768px) and (max-width: 1024px) {
   .con-login-signup {
     grid-template-columns: 1fr;
     grid-template-rows:  0.5fr 1fr 0.4fr;
@@ -560,19 +570,32 @@
   }
 
   .con-review {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 0.15fr 1fr 0.4fr 0.3fr;
-  grid-template-areas: 
-  "select-period select-period"
-  "pie-chart-inc pie-chart-exp"
-  "inc-top3 exp-top3"
-  "balance balance"
-  ;
-  grid-gap: 1rem;
-  font-family: 'DM Serif Display', serif;
-  padding-bottom: 1rem;
-}
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+        "select-range select-range"
+        "balance-area balance-area"
+        "bar-chart pie-chart";
+    padding: 1rem;
+  }
+
+  .bar-chart,
+  .pie-chart {
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .buttons-area-charts button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  #bar_chart_expenses, 
+  #pie_chart_incomes, 
+  #pie_chart_expenses {
+    max-width: 100%;
+    height: 300px;
+  }
 
   #comparison-exp {
     display: flex;
@@ -643,20 +666,9 @@
   
   }
 
-  #pie-chart-inc {
-    display: flex;
-    font-size: 10px;
-    justify-content: center;
-    align-items:center;
-    padding: 4rem 0 2rem 0;
-  }
-
-  #pie-chart-exp {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 10px;
-    padding: 4rem 0 2rem 0;
+  .bar-chart,
+  .pie-chart {
+    padding: 0.5rem;
   }
 
   #comparison-exp {
@@ -699,20 +711,67 @@
   }
 
   .con-review {
-    display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 0.15fr 1fr 1fr 0.4fr 0.4fr 0.3fr ;
-    grid-template-areas: 
-    "select-period"
-    "pie-chart-inc"
-    "pie-chart-exp"
-    "inc-top3"
-    "exp-top3"
-    "balance"
-    ;
-    grid-gap: 1rem;
-    font-family: 'DM Serif Display', serif;
-    padding-bottom: 1rem;
+    grid-template-rows: auto auto auto auto;
+    grid-template-areas:
+        "select-range"
+        "balance-area"
+        "bar-chart"
+        "pie-chart";
+    padding: 1rem;
+  }
+
+  .card-review {
+    display: flex;
+    width: -webkit-fill-available;
+    height: auto;
+  }
+
+  .charts-area {
+    background-color: #F3F5F7 ;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 0;
+  }
+
+  .charts-area >* {
+    padding: 1rem 0;
+  }
+
+  #select-range {
+    padding: 1rem;
+    margin: 0;
+    text-align: center;
+    background-color: #F3F5F7;
+  }
+
+  #balance-area {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    margin: 1em 0;
+  }
+
+  #balance-area >* {
+    border-radius: 1rem;
+    margin: 5px 0;
+    padding: 0.5rem;
+  }
+
+  .buttons-area-charts button {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  #bar_chart_expenses, 
+  #pie_chart_incomes, 
+  #pie_chart_expenses {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 400px;
+    max-height: 400px;
   }
 
   .container-fluid {

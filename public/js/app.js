@@ -361,8 +361,6 @@ $(document).on('click', function(event) {
   $('#daterange_textbox').daterangepicker({
       showDropdowns: true,
       ranges: {
-          'Today': [moment(), moment()],
-          'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
           'This Month': [moment().startOf('month'), moment().endOf('month')],
@@ -542,6 +540,7 @@ function makeBarChart(start, end) {
       },
       success: function(data_bar_expenses) {
           var combinedData = {};
+          var totalExpenses = 0;
 
           // Process expense data
           for (var i = 0; i < data_bar_expenses.length; i++) {
@@ -549,7 +548,8 @@ function makeBarChart(start, end) {
               if (!combinedData[date]) {
                   combinedData[date] = { income: 0, expense: 0 };
               }
-              combinedData[date].expense = data_bar_expenses[i].total_bar_chart_expense;
+              combinedData[date].expense = parseFloat(data_bar_expenses[i].total_bar_chart_expense); // Konwersja na liczbę
+              totalExpenses += combinedData[date].expense;
           }
 
           // Fetch income data
@@ -562,12 +562,16 @@ function makeBarChart(start, end) {
                   end_date: end.format('YYYY-MM-DD')
               },
               success: function(data_bar_incomes) {
+
+                  var totalIncomes = 0;
+
                   for (var i = 0; i < data_bar_incomes.length; i++) {
                       var date = data_bar_incomes[i].date_of_income;
                       if (!combinedData[date]) {
                           combinedData[date] = { income: 0, expense: 0 };
                       }
-                      combinedData[date].income = data_bar_incomes[i].total_bar_chart_income;
+                      combinedData[date].income = parseFloat(data_bar_incomes[i].total_bar_chart_income); // Konwersja na liczbę
+                      totalIncomes += combinedData[date].income;
                   }
 
                   // Prepare data for the chart
@@ -643,6 +647,10 @@ function makeBarChart(start, end) {
                       data: chart_data,
                       options: options
                   });
+
+                  $('#expenses-sum').text(`${totalExpenses.toFixed(2)} PLN`);
+                  $('#incomes-sum').text(`${totalIncomes.toFixed(2)} PLN`);
+                  $('#balance-sum').text(`${(totalIncomes - totalExpenses).toFixed(2)} PLN`);
               },
               error: function(xhr, status, error) {
                   console.error('Error fetching bar chart incomes data:', error);
