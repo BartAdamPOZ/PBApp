@@ -47,19 +47,16 @@
   </div>
   <hr>
   <div class="col">
-    <h5 >Incomes</h5>
+    <h5>Incomes</h5>
     <div class="input-group d-flex">
       <form action="/settings/addIncomeCategory" method="post" class="categoryForms">
-        
-        <input id="inputIncomeCategory" name="incomeCategoryName" type="text" class="form-control" placeholder="New category" aria-label="New category" aria-describedby="button-addon2">
+        <input id="inputIncomeCategory" name="incomeCategoryName" type="text" class="form-control" placeholder="New category" aria-label="New category">
         <label for="inputIncomeCategory"></label>
-      
-        <button class="btn btn-success" type="submit" id="button-addon2">Add</button>
+        <button class="btn btn-success" type="submit" id="addIncomeButton">Add</button>
       </form>
     </div>
     <div class="input-group">
       <form action="/settings/delete-income-category" method="post" class="categoryForms">
-
         <select id="incomeCategorySelect" name="incomeCategorySelected" title="select" class="form-select">
 
           {% for incomeCategory in incomeCategories %}
@@ -68,29 +65,26 @@
 
         </select>
         <label for="incomeCategorySelect"></label>
-        <button class="btn btn-warning" type="submit">Delete</button>
+        <button class="btn btn-warning" type="button" id="deleteIncomeButton">Delete</button>
       </form>
       <form action="/settings/restore-income-categories" method="post">
-        <button class="btn btn-danger mt-3" type="submit">Restore all categories</button>
+        <button class="btn btn-danger mt-3" type="button" id="restoreIncomesButton">Restore all categories</button>
       </form>
-      
     </div>
   </div>
-  <hr>
+  
+  <!-- Expenses Section -->
   <div class="col">
     <h5>Expenses</h5>
     <div class="input-group">
       <form action="/settings/addExpenseCategory" method="post" class="categoryForms">
-
-        <input id="inputExpenseCategory" type="text" name="expenseCategoryName" class="form-control" placeholder="New category" aria-label="New category" aria-describedby="button-addon2">
+        <input id="inputExpenseCategory" type="text" name="expenseCategoryName" class="form-control" placeholder="New category">
         <label for="inputExpenseCategory"></label>
-
-        <button class="btn btn-success" type="submit">Add</button>
+        <button class="btn btn-success" type="submit" id="addExpenseButton">Add</button>
       </form>
     </div>
     <div class="input-group">
       <form action="/settings/delete-expense-category" method="post" class="categoryForms">
-
         <select id="expenseCategorySelect" name="expenseCategorySelected" class="form-select" title="select" >
 
           {% for expenseCategory in expenseCategories %}
@@ -99,29 +93,23 @@
           
         </select>
         <label for="expenseCategorySelect"></label>
-        <button class="btn btn-warning" type="submit">Delete</button>
-
+        <button class="btn btn-warning" type="submit" id="deleteExpenseButton">Delete</button>
       </form>
-
-      <form action="/settings/restore-expense-categories" method="post" >
-
-        <button class="btn btn-danger mt-3" type="submit">Restore all categories</button>
-
+      <form action="/settings/restore-expense-categories" method="post">
+        <button class="btn btn-danger mt-3" type="button" id="restoreExpensesButton">Restore all categories</button>
       </form>
-
     </div>
   </div>
-  <hr>
-  <div class="col mb-1">
+  
+  <!-- Payment Methods Section -->
+  <div class="col">
     <h5>Payment methods</h5>
     <div class="input-group">
       <form action="/settings/addPaymentCategory" method="post" class="categoryForms">
-
-      <input id="inputPaymentCategory" name="paymentCategoryName" type="text" class="form-control" placeholder="New method" aria-label="Recipient's username">
-      <label for="inputPaymentCategory"></label>
-
-      <button class="btn btn-success" type="submit" id="button-addon2">Add</button>
-    </form>
+        <input id="inputPaymentCategory" name="paymentCategoryName" type="text" class="form-control" placeholder="New method">
+        <label for="inputPaymentCategory"></label>
+        <button class="btn btn-success" type="submit" id="addPaymentButton">Add</button>
+      </form>
     </div>
     <div class="input-group">
       <form action="/settings/delete-payment-category" method="post" class="categoryForms">
@@ -133,11 +121,30 @@
 
         </select>
         <label for="paymentCategorySelect"></label>
-        <button class="btn btn-warning" type="submit">Delete</button>
+        <button class="btn btn-warning" type="submit" id="deletePaymentButton">Delete</button>
       </form>
       <form action="/settings/restore-payment-categories" method="post">
-        <button class="btn btn-danger mt-3" type="submit">Restore all categories</button>
+        <button class="btn btn-danger mt-3" type="button" id="restorePaymentsButton">Restore all categories</button>
       </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Do you really want to delete this choice? All the records assigned to this category will be also deleted. Check your incomes/expenses and make sure that you would not lose any records.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="confirmAction">Delete</button>
+      </div>
     </div>
   </div>
 </div>

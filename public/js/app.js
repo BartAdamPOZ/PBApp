@@ -636,7 +636,7 @@ function makeBarChart(start, end) {
                                           label += ': ';
                                       }
                                       if (context.parsed) {
-                                          label += `${context.parsed.y} PLN`; // Example
+                                          label += `${context.parsed.y} PLN`; 
                                       }
                                       return label;
                                   }
@@ -670,6 +670,24 @@ function makeBarChart(start, end) {
       }
   });
 }
+
+$(document).ready(function() {
+  let currentForm = null;
+
+  // Funkcja, która wyświetla modal po kliknięciu odpowiednich przycisków
+  $('#deleteIncomeButton, #deleteExpenseButton, #deletePaymentButton, #restoreIncomesButton, #restoreExpensesButton, #restorePaymentsButton').on('click', function(event) {
+      event.preventDefault();
+      currentForm = $(this).closest('form'); // Znajdź formularz, do którego należy przycisk
+      $('#staticBackdrop').modal('show'); // Wyświetl modal
+  });
+
+  // Obsługa kliknięcia przycisku potwierdzającego w modalu
+  $('#confirmAction').on('click', function() {
+      if (currentForm) {
+          currentForm.submit(); // Wyślij formularz po potwierdzeniu
+      }
+  });
+});
 
 /**
 * Add jQuery Validation plugin method for a valid password
