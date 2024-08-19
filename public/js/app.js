@@ -353,11 +353,6 @@ $(document).on('click', function(event) {
 });
 
 
-/** DateRangePicker test */
-
-
-
-  // Inicjalizacja daterangepicker
   $('#daterange_textbox').daterangepicker({
       showDropdowns: true,
       ranges: {
@@ -375,7 +370,6 @@ $(document).on('click', function(event) {
       refreshCharts(start, end);
   });
 
-  // Wywołanie funkcji wykresów z domyślnym zakresem dat po załadowaniu strony
   var startDate = moment().startOf('month');
   var endDate = moment().endOf('month');
   refreshCharts(startDate, endDate);
@@ -440,7 +434,7 @@ function makePieChartIncomes(start, end) {
                                   label += ': ';
                               }
                               if (context.parsed) {
-                                  label += `${context.parsed} PLN`; // Example
+                                  label += `${context.parsed} PLN`; 
                               }
                               return label;
                           }
@@ -449,7 +443,6 @@ function makePieChartIncomes(start, end) {
               }
           };
 
-          // Jeśli piechart już istnieje, należy go usunąć
           if (window.piechartIncomes) {
               window.piechartIncomes.destroy();
           }
@@ -521,7 +514,7 @@ function makePieChartExpenses(start, end) {
                                   label += ': ';
                               }
                               if (context.parsed) {
-                                  label += `${context.parsed} PLN`; // Example
+                                  label += `${context.parsed} PLN`; 
                               }
                               return label;
                           }
@@ -530,7 +523,6 @@ function makePieChartExpenses(start, end) {
               }
           };
 
-          // Jeśli piechart już istnieje, należy go usunąć
           if (window.piechartExpenses) {
               window.piechartExpenses.destroy();
           }
@@ -561,17 +553,15 @@ function makeBarChart(start, end) {
           var combinedData = {};
           var totalExpenses = 0;
 
-          // Process expense data
           for (var i = 0; i < data_bar_expenses.length; i++) {
               var date = data_bar_expenses[i].date_of_expense;
               if (!combinedData[date]) {
                   combinedData[date] = { income: 0, expense: 0 };
               }
-              combinedData[date].expense = parseFloat(data_bar_expenses[i].total_bar_chart_expense); // Konwersja na liczbę
+              combinedData[date].expense = parseFloat(data_bar_expenses[i].total_bar_chart_expense); 
               totalExpenses += combinedData[date].expense;
           }
 
-          // Fetch income data
           $.ajax({
               url: '/incomes/fetchbardataAction',
               method: 'POST',
@@ -589,11 +579,10 @@ function makeBarChart(start, end) {
                       if (!combinedData[date]) {
                           combinedData[date] = { income: 0, expense: 0 };
                       }
-                      combinedData[date].income = parseFloat(data_bar_incomes[i].total_bar_chart_income); // Konwersja na liczbę
+                      combinedData[date].income = parseFloat(data_bar_incomes[i].total_bar_chart_income); 
                       totalIncomes += combinedData[date].income;
                   }
 
-                  // Prepare data for the chart
                   var dates = [];
                   var expenses = [];
                   var incomes = [];
@@ -656,7 +645,6 @@ function makeBarChart(start, end) {
                       }
                   };
 
-                  // Jeśli bar chart już istnieje, należy go usunąć
                   if (window.barChart) {
                       window.barChart.destroy();
                   }
@@ -683,18 +671,11 @@ function makeBarChart(start, end) {
   });
 }
 
-
-
-
-
-  
-
-
 /**
-         * Add jQuery Validation plugin method for a valid password
-         *
-         * Valid passwords contain at least one letter and one number.
-         */
+* Add jQuery Validation plugin method for a valid password
+*
+* Valid passwords contain at least one letter and one number.
+*/
 $.validator.addMethod('validPassword',
   function (value, element, param) {
 
