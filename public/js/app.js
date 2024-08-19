@@ -419,9 +419,18 @@ function makePieChartIncomes(start, end) {
 
           var options = {
               responsive: true,
+              maintainAspectRatio: true,
               plugins: {
+                  title: {
+                    display: true,
+                    text: 'Incomes',
+                    fullSize: true,
+                    font: {
+                      size: 32
+                    }
+                  },
                   legend: {
-                      position: 'top',
+                      display: false,
                   },
                   tooltip: {
                       callbacks: {
@@ -490,10 +499,20 @@ function makePieChartExpenses(start, end) {
 
           var options = {
               responsive: true,
+              maintainAspectRatio: true,
               plugins: {
-                  legend: {
-                      position: 'top',
+                  title: {
+                    display: true,
+                    text: 'Expenses',
+                    fullSize: true,
+                    font: {
+                      size: 32
+                    }
                   },
+                  legend: {
+                    display: false,
+                  },
+                  
                   tooltip: {
                       callbacks: {
                           label: function(context) {
@@ -615,6 +634,7 @@ function makeBarChart(start, end) {
 
                   var options = {
                       responsive: true,
+                      maintainAspectRatio: true,
                       plugins: {
                           legend: {
                               position: 'top',
@@ -667,31 +687,7 @@ function makeBarChart(start, end) {
 
 
 
-  $('#expense-button-chart').on('click', function() {
-    // Sprawdź, czy przycisk ma klasę btn-outline-secondary
-    if ($(this).hasClass('btn-outline-secondary')) {
-        // Usuń klasę btn-outline-secondary i dodaj btn-success
-        $(this).removeClass('btn-outline-secondary').addClass('btn-success');
-        $('#pie_chart_incomes').attr('hidden', true);
-    }
-
-    // Usuń z income-button-chart klasę btn-success i dodaj btn-outline-secondary
-    $('#income-button-chart').removeClass('btn-success').addClass('btn-outline-secondary');
-    $('#pie_chart_expenses').removeAttr('hidden');
-  });
-
-  $('#income-button-chart').on('click', function() {
-    // Sprawdź, czy przycisk ma klasę btn-outline-secondary
-    if ($(this).hasClass('btn-outline-secondary')) {
-        // Usuń klasę btn-outline-secondary i dodaj btn-success
-        $(this).removeClass('btn-outline-secondary').addClass('btn-success');
-        $('#pie_chart_expenses').attr('hidden', true);
-    }
-
-    // Usuń z expense-button-chart klasę btn-success i dodaj btn-outline-secondary
-    $('#expense-button-chart').removeClass('btn-success').addClass('btn-outline-secondary');
-    $('#pie_chart_incomes').removeAttr('hidden');
-  });
+  
 
 
 /**
