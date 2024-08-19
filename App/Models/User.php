@@ -332,7 +332,7 @@ class User extends \Core\Model
         $text = View::getTemplate('Password/reset_email.txt', ['url' => $url]);
         $html = View::getTemplate('Password/reset_email.html', ['url' => $url]);
 
-        Mail::send($this -> email, 'Password reset', $text, $html);
+        Mail::send($this -> email, 'Password reset', $text, $html, $this -> name);
 
     }
 
@@ -399,7 +399,7 @@ class User extends \Core\Model
         $text = View::getTemplate('Signup/activation_email.txt', ['url' => $url]);
         $html = View::getTemplate('Signup/activation_email.html', ['url' => $url]);
 
-        Mail::send($this -> email, 'Account activation', $text, $html);
+        Mail::send($this -> email, 'Account activation', $text, $html, $this -> name);
 
     }
 

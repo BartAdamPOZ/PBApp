@@ -9,7 +9,7 @@ use PHPMailer\PHPMailer\Exception;
 
 class Mail {
 
-  public static function send($to, $subject, $text, $html) {
+  public static function send($to, $subject, $text, $html, $recipients_name) {
 
     $mail = new PHPMailer(true);
 
@@ -26,9 +26,9 @@ class Mail {
 
         //Recipients
         $mail->setFrom('from@example.com', 'Personal Budget Support Team');
-        $mail->addAddress($to, 'Bartlomiej');     //Add a recipient
+        $mail->addAddress($to, $recipients_name);     //Add a recipient
         //$mail->addAddress('ellen@example.com');               //Name is optional
-        $mail->addReplyTo('bartlomiej.adamczewski@gmail.com', 'Information');
+        //$mail->addReplyTo('bartlomiej.adamczewski@gmail.com', 'Information');
         //$mail->addCC('cc@example.com');
         //$mail->addBCC('bcc@example.com');
 
