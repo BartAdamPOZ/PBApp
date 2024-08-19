@@ -674,17 +674,15 @@ function makeBarChart(start, end) {
 $(document).ready(function() {
   let currentForm = null;
 
-  // Funkcja, która wyświetla modal po kliknięciu odpowiednich przycisków
   $('#deleteIncomeButton, #deleteExpenseButton, #deletePaymentButton, #restoreIncomesButton, #restoreExpensesButton, #restorePaymentsButton').on('click', function(event) {
       event.preventDefault();
-      currentForm = $(this).closest('form'); // Znajdź formularz, do którego należy przycisk
-      $('#staticBackdrop').modal('show'); // Wyświetl modal
+      currentForm = $(this).closest('form'); 
+      $('#staticBackdrop').modal('show');l
   });
 
-  // Obsługa kliknięcia przycisku potwierdzającego w modalu
   $('#confirmAction').on('click', function() {
       if (currentForm) {
-          currentForm.submit(); // Wyślij formularz po potwierdzeniu
+          currentForm.submit();
       }
   });
 });
